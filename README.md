@@ -926,3 +926,55 @@ public class ArithmeticExeptionTest {
 ```
 
 Com o atalho *CTRL + Q* é possível verificarmos estas informações.
+
+
+---
+
+# 99 - Exceções pt 05 - Lançando exceção checked
+
+Não há a necessidade de colocar a assinatura no método quando a exceção for do tipo Runtime, **MAS** é obrigatório quando é uma exceção checked (diretamente filhas de Exception).
+
+Geralmente o ```try``` e ```catch``` é utilizado dentro de métodos privados.
+
+---
+
+# 100 - Exceções pt 06 - Bloco Finally
+
+Finally faz parte do `try` e `catch`. Ele serve como 'fechamento' do bloco de código, isto pois ele **SEMPRE** será executado, independentemente se ocorreu um erro ou o código funcionou como esperado.
+
+```Java
+public static void main(String[] args) {
+    try {  
+	    System.out.println("Iniciando..");
+	    throw new RuntimeException();
+	    
+	} catch (Exception e) {  
+	    e.printStackTrace();
+	    
+	} finally {  
+		System.out.println("Finalizado");
+		
+	}  
+	return null;
+}
+```
+
+O `try` pode ser utilizado diretamente com o `finally`, ou seja, sem o `catch`, mas geralmente não se é utilizado.
+
+```Java
+public static void main(String[] args) {
+	try {  
+	    System.out.println("Iniciando..");
+		
+	} finally {
+	    System.out.println("Finalizado");
+	    
+	}  
+	return null;
+}
+```
+
+ Importante falar que se não houver algum tratamento superior, o código será quebrado.
+
+---
+
