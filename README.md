@@ -804,7 +804,7 @@ Desta maneira, será executada o método `createArchive`, no qual criará um obj
 
 **Adendos**:
 
- * No ``try {} catch() {}`` caso a exceção não for *Runtime*, a exceção no bloco do `catch () {}` tem que ser uma no qual o código o bloco do `try` seja possível de ser lançada. Podemos verificar isto dentro do método `createNewFile` na parte ***throws IOException***. Também é possível utilizar a classe `Exception` pois ela é genérica, assim tratando de tudo, o que **NÃO É RECOMENDADO**, isto porque, no bloco do `try`, não se utiliza várias regras de negócios e se utilizado o `Exception`, será difícil saber de qual exceção se trata.
+ * No ``try`` e ``catch`` caso a exceção não for *Runtime*, a exceção no bloco do `catch` tem que ser uma no qual o código o bloco do `try` seja possível de ser lançada. Podemos verificar isto dentro do método `createNewFile` na parte ***throws IOException***. Também é possível utilizar a classe `Exception` pois ela é genérica, assim tratando de tudo, o que **NÃO É RECOMENDADO**, isto porque, no bloco do `try`, não se utiliza várias regras de negócios e se utilizado o `Exception`, será difícil saber de qual exceção se trata.
  
  * EVITAR utilizar lógica de negócio no `catch`, pois ele é utilizado somente para se lidar com exceções.
  
@@ -975,6 +975,37 @@ public static void main(String[] args) {
 ```
 
  Importante falar que se não houver algum tratamento superior, o código será quebrado.
+
+---
+
+# 101 - Exceções pt 07 - Capturando múltiplas exceções
+
+É possível utilizar vários `catch` em  junção ao `try`, logo sendo para tratar de múltiplas exceções que podem acontecer. Para isso, é importante que as exceções mais genéricas fiquem no final.
+
+```Java
+public static void ExceptionTesting() {
+    try {
+        throw new ArithmeticException();
+        
+    } catch (IllegalArgumentException e) {
+        System.out.println("--> IllegalArgumentException");
+        
+    } catch (ArrayIndexOutOfBoundsException e) {
+        System.out.println("--> ArrayIndexOutOfBoundsException");
+        
+    } catch (ArithmeticException e) {
+        System.out.println("--> ArithmeticException");
+	    
+    } catch (RuntimeException e) {
+        System.out.println("--> RuntimeException");
+	    
+    }
+}
+
+// Saída: --> ArithmeticException
+```
+
+Também é possível utilizar com *Exception* e IOException e para isso terá de colocar um catch para cada um.
 
 ---
 
