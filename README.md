@@ -1005,13 +1005,11 @@ public static void ExceptionTesting() {
 // Saída: --> ArithmeticException
 ```
 
-Também é possível utilizar com *Exception* e IOException e para isso terá de colocar um catch para cada um.
-
 ---
 
 # 102 - Exceções pt 08 - Multi catch em linha
 
-É possível reduzir o `catch` a uma linhas, mas com isso as exceções **NÃO PODEM** estar na mesma linha de herança
+É possível reduzir o `catch` a uma linhas, mas com isso as exceções **NÃO PODEM** estar na mesma linha de herança.
 
 ```Java
 public static void ExceptionTesting() {
@@ -1028,4 +1026,10 @@ public static void ExceptionTesting() {
 Isso é utilizado para quando várias exceções podem  ser lidadas da mesma forma.
 
 ---
+
+# 103 - Exceções pt 09 - Try with resources
+
+Com o *Try with resources* você declara a variável e instância o objeto logo no `try`, para isso só podem ser utilizadas classes que implementam das classes ***Closeable*** e ***AutoCloseable***, porque o *Try with resources* ele se encarrega de fechar (finally) a variável de referência. O Java também sempre irá fechar na ordem **inversa** do que foi aberta
+
+Com o *Try with resources*, pode-se utiliza-lo sem a necessidade de um `catch` ou `finally`, contudo você é obrigado a informar que o método lança (throws) a exceção lançada.
 
