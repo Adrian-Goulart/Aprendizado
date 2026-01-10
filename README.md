@@ -1009,3 +1009,23 @@ Também é possível utilizar com *Exception* e IOException e para isso terá de
 
 ---
 
+# 102 - Exceções pt 08 - Multi catch em linha
+
+É possível reduzir o `catch` a uma linhas, mas com isso as exceções **NÃO PODEM** estar na mesma linha de herança
+
+```Java
+public static void ExceptionTesting() {
+    try {
+        ExceptionTest();
+    } catch (SQLException | ArithmeticException e) {
+        e.printStackTrace();
+    }
+    
+    public static void ExceptionTest() throws ArithmeticException,     SQLException {}
+}
+```
+
+Isso é utilizado para quando várias exceções podem  ser lidadas da mesma forma.
+
+---
+
