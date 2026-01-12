@@ -1033,3 +1033,37 @@ Com o *Try with resources* você declara a variável e instância o objeto logo 
 
 Com o *Try with resources*, pode-se utiliza-lo sem a necessidade de um `catch` ou `finally`, contudo você é obrigado a informar que o método lança (throws) a exceção lançada.
 
+---
+
+# 104 - Exceções pt 10 - Exceção customizada
+
+Criar uma Exceção pode-se ser necessário as vezes e para isto basta criar uma classe no qual estenda do tipo de exceção desejada. Em sua nomenclatura é importante que contenha  "Exception" no final.
+
+Exemplo:
+
+```Java
+public class LoginInvalidoException extends Exception {
+    public LoginInvalidoException() {
+        super("Login inválido");
+    }
+	
+    public LoginInvalidoException(String message) {
+        super(message);
+    }
+}
+```
+
+---
+
+# 105 - Exceções pt 11 - Exceção e regras de sobrescrita
+
+Sobre a sobrescrita de métodos que lançam exceções temos as seguintes regras:
+
+-  Não é necessário que o método sobrescrito tenha exceções;
+-  O método sobrescrito pode conter conter apenas uma exceção;
+-  Qualquer exceção do tipo Runtime (unchecked) podem ser lançadas;
+-  Não é possível declarar uma exceção superior (mais genéricas) as que pertencem  ao método super;
+-  Não pode-se declarar nenhuma exceção do tipo checked além das que estão presentes no método super.
+
+---
+
