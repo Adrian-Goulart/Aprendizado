@@ -1067,3 +1067,34 @@ Sobre a sobrescrita de métodos que lançam exceções temos as seguintes regras
 
 ---
 
+# 106 - Classes Utilitárias - Wrappers pt 01
+
+Os wrapper's são **objetos** que vão encapsular os tipos primitivos, são os tipos primitivos:
+
+```Java
+byte byteP = 1;
+short shortP = 10;
+int intP = 100;
+long longP = 1000L;
+float floatP = 10F;
+double doubleP = 10D;
+char charP = 'A';
+boolean booleanP = true;
+```
+
+Os wrapper's começam com o seu tipo com letra maiúscula, com exceção do `int` e o `char`, que ficam como, `Integer` e `Character` respectivamente.
+
+```Java
+Byte byteW = 1;
+Short shortW = 10;
+Integer intW = 100;
+Long longW = 1000L;
+Float floatW = 10F;
+Double doubleW = 10D;
+Character charW = 'A';
+Boolean booleanW = true;
+```
+
+Os valores dos Wrapper's, estão relacionados com o polimorfismo, e não relacionado ao tamanho como são os tipos primitivos, ou seja, não é possível alocar o valor de um em outro.
+
+---
