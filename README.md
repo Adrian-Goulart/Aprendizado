@@ -1207,3 +1207,91 @@ Com isto é criada uma String fora do Pool de Strings (o Heap), então o ***nome
 
 ---
 
+# 109 - Classes Utilitárias - Strings pt 02
+
+Alguns métodos da String:
+
+ `.charAt(index)`: Retorna o caractere da posição solicitada:
+
+```Java
+public class StringTest02 {
+    public static void main(String[] args) {
+        String nome1 = "Killua";
+        System.out.println(nome1.charAt(0));
+    }
+}
+
+// Saída: K
+```
+
+ `.length()`: Retorna o tamanho da String, length também é utilizado em arrays mas como atributo, já em string é como método.
+
+```Java
+public class StringTest02 {
+    public static void main(String[] args) {
+        String nome1 = "Killua";
+        System.out.println(nome1.length());
+    }
+}
+
+// Saída: 6
+```
+
+`.replace(x, y)`: Substitui o caractere de posição *x* pela *y*.
+
+```Java
+public class StringTest02 {
+    public static void main(String[] args) {
+        String nome1 = "Killua";
+        System.out.println(nome1.replace("l", "u"));
+	}
+}
+
+// Saída: Kiuuua
+```
+
+`.toLowerCase()` e `.toUpperCase()`: Deixam a String em minúscula  e maiúscula respectivamente.
+
+```Java
+public class StringTest02 {
+    public static void main(String[] args) {
+        String nome1 = "Killua";
+        System.out.println(nome1.toLowerCase());
+        System.out.println(nome1.toUpperCase());
+    }
+}
+
+// Saída: killua
+//        KILLUA
+```
+
+`.substring(beginning, end)`: Retorna os valores da String a partir do index de um ponto (beginning) até o index -1 do outro (end). Quando não informado o index final ele naturalmente vai até o final.
+
+```Java
+public class StringTest02 {
+    public static void main(String[] args) {
+        String nums = "0123456789";
+		
+        System.out.println(nums.substring(2, 7));
+    }
+}
+
+// Saída: 23456
+```
+
+`.trim()`: Remove os espaços em branco do começo e final da String.
+
+```Java
+public class StringTest02 {
+    public static void main(String[] args) {
+        String nome1 = "      Killua              ";
+		
+        System.out.println(nome1.trim());
+    }
+}
+
+// Saída: Killua
+```
+
+---
+
