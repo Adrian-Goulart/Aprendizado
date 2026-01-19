@@ -310,7 +310,7 @@ public class Episodio {
 
 # 62 - Orientação Objetos - Métodos estáticos
 
-Não pode-se adicionar nenhuma variável estática a um método não estático, mas o contrário é possível. É recomendado utilizar métodos estáticos quando o método não acessa uma variável.
+	Não pode-se adicionar nenhuma variável estática a um método não estático, mas o contrário é possível. É recomendado utilizar métodos estáticos quando o método não acessa uma variável.
 
 ---
 
@@ -645,7 +645,7 @@ Nela também é possível criar métodos estáticos
 
 # 91 - Orientação Objetos - Polimorfismo pt 02 - Funcionamento
 
-O polimorfismo significa múltiplas formas, isto significa, trocar o tipo da variável de referência e continuar utilizando outros objetos, somente aplicado na herança.
+O polimorfismo significa múltiplas formas, isto significa, trocar o tipo da variável de referência e continuar utilizando em outros objetos, somente aplicado na herança.
 
 ---
 
@@ -1098,3 +1098,112 @@ Boolean booleanW = true;
 Os valores dos Wrapper's, estão relacionados com o polimorfismo, e não relacionado ao tamanho como são os tipos primitivos, ou seja, não é possível alocar o valor de um em outro.
 
 ---
+
+# 107 - Classes Utilitárias - Wrappers pt 02
+
+Existem dois conceitos em wrapper's, os autoboxing e unboxing.
+
+O autoboxing é quando deixamos o Java transformar o tipo primitivo em wrapper.
+
+```Java
+Integer intW = 100;
+```
+
+O unboxing já é o contrário, ou seja, o Java transforma o wrapper em tipo primitivo.
+
+```Java
+int i = intW;
+```
+
+Os wrapper's por serem objetos possuem vários métodos, como por exemplos o parse, no qual transforma uma String no valor desejado.
+
+```Java
+Integer integer = Integer.parseInt("234");
+System.out.println(integer);
+```
+
+---
+
+# 108 - Classes Utilitárias - Strings pt 01
+
+Toda String é criada no que chamamos de String Constant Pool (que está dentro do Heap).
+
+```Java
+public class StringTest {
+    public static void main(String[] args) {
+        String nome1 = "Adrian";
+    }
+}
+```
+
+Quando criamos uma variável de mesmo nome a String não será duplicada e sim reutilizada, ou seja, irá ser feita duas referência a mesma String, isto é o que chamamos de ***String Interning.***
+
+```Java
+public class StringTest {
+    public static void main(String[] args) {
+        String nome1 = "Adrian";
+        String nome2 = "Adrian";
+		
+        // Utilização do == para comparar referências e não valores
+        System.out.println(nome1 == nome2);
+	}
+}
+
+// Saída: true
+```
+
+Contudo se tentarmos concatenar mais uma String ao nome, não iremos obter resultado.
+
+```Java
+public class StringTest {
+    public static void main(String[] args) {
+        String nome1 = "Adrian";
+        String nome2 = "Adrian";
+		
+        nome1.concat(" Goulart");
+		
+		System.out.println(nome1);
+        System.out.println(nome1 == nome2);
+    }
+}
+
+// Saída: Adrian
+//        true
+```
+
+Desta maneira na String Pool é criada uma String " Goulart" e também "Adrian Goulart", mas não há nenhuma variável de referência para estar Strings, então para obter o resultado concatenado, precisamos referenciá-la.
+
+```Java
+public class StringTest {
+    public static void main(String[] args) {
+        String nome1 = "Adrian";
+        String nome2 = "Adrian";
+        
+        nome1 = nome1.concat(" Goulart");
+		
+        System.out.println(nome1);
+        System.out.println(nome1 == nome2);
+    }
+}
+
+// Saída: Adrian Goulart
+//        false
+```
+
+Também podemos criar Strings de valores iguais mas com referências diferentes, mas não é muito utilizada.
+
+```Java
+public class StringTest {
+    public static void main(String[] args) {
+        String nome1 = "Adrian";
+        String nome2 = new String("Adrian");
+		
+        System.out.println(nome1 == nome2);
+    }
+}
+```
+
+Com isto é criada uma String fora do Pool de Strings (o Heap), então o ***nome2*** está fazendo referência ao objeto ***Adrian*** dentro do Heap no qual encapsula o ***Adrian*** dentro da Pool de String. E para obter este valor encapsulado podemos utilizar o `nome1.intern()`. 
+
+---
+
