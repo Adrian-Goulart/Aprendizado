@@ -1383,3 +1383,38 @@ Para saber se a StringBuilder está de fato manipulando a String dentro do objet
 
 ---
 
+# 112 - Classes Utilitárias - Date
+
+Importante falar que existem dois pacotes Date no java, o java `java.util` e o `java.sql`, um para trabalhar com aplicação do Java e outro com Banco de Dados respectivamente.
+
+O date é representado por um *long* em milisegundos, a partir de 31/12/1969 
+
+```Java
+public class DateTeste01 {
+    public static void main(String[] args) {
+        Date date = new Date(1000000);
+        System.out.println(date);
+    }
+}
+
+// Saída: Wed Dec 31 21:00:00 BRT 1969
+
+```
+
+O resultado sai desta forma pois é convertido para String com o `toString()`.
+
+Com o `date.getTime()` recebemos o long.
+
+```Java
+public class DateTeste01 {
+    public static void main(String[] args) {
+        Date date = new Date();
+        System.out.println(date.getTime());
+		 
+    }
+}
+
+// Momento exato que executei: 1768948448364 
+```
+
+---
