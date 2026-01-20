@@ -1367,3 +1367,19 @@ O recomendado é somente usar a StringBuilder ou a StringBuffer quando você sen
 
 ---
 
+# 111 - Classes Utilitárias - Strings pt 04 - StringBuilder
+
+StringBuilder NÃO é uma String, ou seja não é imutável.
+
+No StringBuilder podemos colocar dentro de sua estrutura, sua capacidade, uma String ou uma sequência de caracteres, caso não passado nada, será aplicado um valor de capacidade 16 caracteres, caso o valor seja ultrapassado quando em execução, o 16 será duplicado e assim segue adiante.
+
+Para adicionar uma String a StringBuilder, somente com o método `.append()`
+
+Conseguimos ver o resultado da StringBuilder (já que ela não e uma String) pois nela há um método `.toString()`.
+
+O `.append()` também funciona como concatenação, por isto a StringBuilder apresenta um bom desempenho, pois ela é capaz de mudar a String sem ficar alocando espaço na Pool de String.
+
+Para saber se a StringBuilder está de fato manipulando a String dentro do objeto, é necessário saber qual o retorno ela está oferecendo se é a String ou StringBuilder.
+
+---
+
