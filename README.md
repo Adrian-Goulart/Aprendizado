@@ -1498,4 +1498,39 @@ public class CalendarTest {
 
 ---
 
+# 114 - Classes Utilitárias - DateFormat
+
+DateFormat também é uma classe estática, logo não é possível utilizar o `new`, mas neste caso por ser uma lista foi possível. Como o próprio nome já diz, com ele podemos formatar as datas das seguintes maneiras:
+
+```Java
+public class DateFotmatTeste01 {
+    public static void main(String[] args) {
+        Calendar calendar = Calendar.getInstance();
+        
+        DateFormat[] df = new DateFormat[7];
+        df[0] = DateFormat.getInstance();
+        df[1] = DateFormat.getDateInstance();
+        df[2] = DateFormat.getDateTimeInstance();
+        df[3] = DateFormat.getDateInstance(DateFormat.SHORT);
+        df[4] = DateFormat.getDateInstance(DateFormat.MEDIUM);
+        df[5] = DateFormat.getDateInstance(DateFormat.LONG);
+        df[6] = DateFormat.getDateInstance(DateFormat.FULL);
+        
+        for (DateFormat dateFormat : df) {
+            System.out.println(dateFormat.format(calendar.getTime())); 
+        }
+    }
+}
+
+// Saída: 21/01/2026 18:51
+// 21 de jan. de 2026
+// 21 de jan. de 2026 18:51:42
+// 21/01/2026
+// 21 de jan. de 2026
+// 21 de janeiro de 2026
+// quarta-feira, 21 de janeiro de 2026 
+
+```
+
+---
 
