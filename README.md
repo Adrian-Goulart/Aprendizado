@@ -1418,3 +1418,84 @@ public class DateTeste01 {
 ```
 
 ---
+
+# 113 - Classes Utilitárias - Calendar
+
+Também do `java.util`. Por ser uma classe abstrata, não se dá ao uso de `new`, então podemos chamar assim:
+
+```Java
+public class CalendarTest {
+    public static void main(String[] args) {
+        Calendar calendar = Calendar.getInstance();
+    }
+}
+```
+
+Com ele há alguns métodos como:
+
+Verificar se o primeiro dia da semana é domingo (ou algum outro dia);
+
+```Java
+public class CalendarTest {
+    public static void main(String[] args) {
+        Calendar calendar = Calendar.getInstance();
+          
+        if (calendar.getFirstDayOfWeek() == Calendar.SUNDAY) {
+            System.out.println("Domingo é o primeiro dia da semana");
+        }
+    }
+}
+```
+
+Ver o dia da semana, do mês, do ano e o dia da semana no mês:
+
+```Java
+public class CalendarTest {
+    public static void main(String[] args) {
+        Calendar calendar = Calendar.getInstance();
+        
+        System.out.println(calendar.get(Calendar.DAY_OF_WEEK));
+		System.out.println(calendar.get(Calendar.DAY_OF_MONTH));
+		System.out.println(calendar.get(Calendar.DAY_OF_YEAR));
+		System.out.println(calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH));
+    }
+}
+```
+
+Adicionar tempo:
+
+```Java
+public class CalendarTest {
+    public static void main(String[] args) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_WEEK, 3);
+        calendar.add(Calendar.HOUR, 2);
+        
+		
+        Date date = calendar.getTime();
+        System.out.println(date);
+    }
+}
+
+// Saída: Sat Jan 24 20:31:50 BRT 2026
+```
+
+Quando se adiciona uma hora maior que o dia ele passará para o próximo dia e assim se segue, caso queira que o tempo excedente continue no mesmo dia usa-se o `.roll`:
+
+```Java
+public class CalendarTest {
+    public static void main(String[] args) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.roll(Calendar.HOUR, 20);
+		
+        Date date = calendar.getTime();
+        System.out.println(date);
+    }
+}
+
+// Saída: Wed Jan 21 14:32:18 BRT 2026
+```
+
+---
+
+
