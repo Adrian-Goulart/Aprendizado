@@ -1560,3 +1560,35 @@ Com o Locale nós criamos uma região e inserimos dentro do método `.getDateIns
 
 ---
 
+# 116 - Classes Utilitárias - Internacionalização Números com Locale
+
+O `NumberFormat` sendo também uma classe abstrata, não pode ser instanciada. Ela serve para a formatação regional de números.
+
+```Java
+public class NumberFormatTest01 {
+    public static void main(String[] args) {
+        Locale localeBrazil = new Locale("pt", "br");
+        Locale localeJapan = Locale.JAPAN;
+        
+        NumberFormat[] nf = new NumberFormat[3];
+        nf[0] = NumberFormat.getInstance(localeBrazil);
+        nf[1] = NumberFormat.getInstance(localeJapan);
+        
+        // Fazendo diretamente
+        nf[2] = NumberFormat.getInstance(Locale.KOREA);
+		
+        float value = 3421831.54F;
+        for (NumberFormat numberFormat : nf) {
+            System.out.println(numberFormat.format(value));
+        }
+    }
+}
+
+// Saída: 3.421.831,5
+//        3,421,831.5
+//        3,421,831.5
+
+```
+
+---
+
