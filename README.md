@@ -1534,3 +1534,29 @@ public class DateFotmatTeste01 {
 
 ---
 
+# 115 - Classes Utilitárias - Internacionalização Datas com Locale
+
+A classe Locale tem o intuito de regionalizar, com isso, dar suporte a várias línguas, como seu uso com Datas por exemplo:
+
+```Java
+public class LocaleTeste01 {
+    public static void main(String[] args) {
+        Locale localeBrazil = new Locale("pt", "br");
+        Locale localeJapan = new Locale("ja", "jp");
+		
+        Calendar calendar = Calendar.getInstance();
+        DateFormat dfBrazil = DateFormat.getDateInstance(DateFormat.FULL, localeBrazil);
+        DateFormat dfJapan = DateFormat.getDateInstance(DateFormat.FULL, localeJapan);
+        System.out.println("Brasil: " + dfBrazil.format(calendar.getTime()));
+        System.out.println("Japão: " + dfJapan.format(calendar.getTime()));
+    }
+}
+
+// Saída: Brasil: quinta-feira, 22 de janeiro de 2026
+//        Japão: 2026年1月22日木曜日
+```
+
+Com o Locale nós criamos uma região e inserimos dentro do método `.getDateInstance(style, Locale)` que precisa ser informado o tipo da data e a região.
+
+---
+
