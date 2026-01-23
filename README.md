@@ -1592,3 +1592,155 @@ public class NumberFormatTest01 {
 
 ---
 
+# 117 - Classes Utilitárias - Internacionalização de moeda com Locale
+
+Para moedas, ao invés de utilizar o `.getInstance()`, usaremos o `.getCurrencyInstance()`.
+
+```Java
+public class NumberFormatTest02 {
+    public static void main(String[] args) {
+        Locale localeBrazil = new Locale("pt", "br");
+        Locale localeJapan = Locale.JAPAN;
+        // Locale localeKorean = Locale.KOREA;
+		
+        NumberFormat[] nf = new NumberFormat[3];
+		
+        nf[0] = NumberFormat.getCurrencyInstance(localeBrazil);
+        nf[1] = NumberFormat.getCurrencyInstance(localeJapan);
+        nf[2] = NumberFormat.getCurrencyInstance(Locale.KOREA);
+		
+        float value = 3421831.54F;
+        for (NumberFormat numberFormat : nf) {
+            System.out.println(numberFormat.format(value));
+        }
+    }
+}
+
+// Saída: R$ 3.421.831,50
+//        ￥3,421,832
+//        ₩3,421,832
+```
+
+Também podemos pegar o números de casas depois da vírgula com o `.getMaximumFraction`:
+
+```Java
+public class NumberFormatTest02 {
+    public static void main(String[] args) {
+        Locale localeBrazil = new Locale("pt", "br");
+        Locale localeJapan = Locale.JAPAN;
+		
+        NumberFormat[] nf = new NumberFormat[3];
+		
+        nf[0] = NumberFormat.getCurrencyInstance(localeBrazil);
+        nf[1] = NumberFormat.getCurrencyInstance(localeJapan);
+        nf[2] = NumberFormat.getCurrencyInstance(Locale.KOREA);
+		
+        float value = 3421831.54F;
+        for (NumberFormat numberFormat : nf) {
+            System.out.println(numberFormat.format(value));
+            System.out.println("Casas: "+numberFormat.getMaximumFractionDigits());
+        }
+	}
+}
+
+// Saída: R$ 3.421.831,50
+//        Casas: 2
+//        ￥3,421,832
+//        Casas: 0
+//        ₩3,421,832
+//        Casas: 0
+```
+
+Também podemos permitir um número máximo de casas
+
+```Java
+public class NumberFormatTest02 {
+    public static void main(String[] args) {
+        Locale localeBrazil = new Locale("pt", "br");
+        Locale localeJapan = Locale.JAPAN;
+        NumberFormat[] nf = new NumberFormat[3];
+        
+        nf[0] = NumberFormat.getCurrencyInstance(localeBrazil);
+        nf[1] = NumberFormat.getCurrencyInstance(localeJapan);
+        nf[2] = NumberFormat.getCurrencyInstance(Locale.KOREA);
+        
+        float value = 3421831.54F;
+        for (NumberFormat numberFormat : nf) {  
+            numberFormat.setMaximumFractionDigits(2);
+            System.out.println(numberFormat.format(value));
+            System.out.println("Casas: "+numberFormat.getMaximumFractionDigits());
+        }
+    }
+}
+// Saída: R$ 3.421.831,50
+//        Casas: 2
+//        ￥3,421,831.5
+//        Casas: 2
+//        ₩3,421,831.5
+//        Casas: 2
+```
+
+Também podemos fazer o *parse* **para números**:
+
+```Java
+public class NumberFormatTest02 {
+    public static void main(String[] args) {
+        Locale localeBrazil = new Locale("pt", "br");
+        Locale localeJapan = Locale.JAPAN;
+        NumberFormat[] nf = new NumberFormat[4];
+        
+        nf[0] = NumberFormat.getInstance();
+        nf[1] = NumberFormat.getInstance(localeJapan);
+        nf[2] = NumberFormat.getInstance(Locale.KOREA);
+        nf[3] = NumberFormat.getInstance(localeBrazil);
+        
+        String stringValue = "1000.2130";
+        try {  
+            System.out.println(nf[0].parse(stringValue));
+        } catch (ParseException e) {  
+            e.printStackTrace();
+        }
+    }
+}
+
+// Saída: 10002130
+```
+
+É possível utilizar o *underscore* para separar números no Java, mas neste caso não, por ser uma String. O *parse* ele TALVEZ retorne todo o número mas se tivesse um *underscore* ele iria considerar o número até lá.
+
+Para o *parse* com moedas, precisamos informar no número o tipo da moeda:
+
+```Java
+public class NumberFormatTest02 {
+    public static void main(String[] args) {
+        Locale localeBrazil = new Locale("pt", "br");
+        Locale localeJapan = Locale.JAPAN;
+        NumberFormat[] nf = new NumberFormat[1];
+		
+        nf[0] = NumberFormat.getCurrencyInstance(localeJapan);
+        
+        double value = 1_000.2130;  
+        for (NumberFormat numberFormat : nf) {  
+            numberFormat.setMaximumFractionDigits(2);
+            System.out.println(numberFormat.format(value));
+        }
+        
+        String stringValue = "￥1000.2130";
+        try {
+            System.out.println(nf[0].parse(stringValue));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+// Saída: ￥1,000.21
+//         1000.213
+```
+
+Caso não informado, será lançado um Erro de Unparseable.
+
+---
+
+
+
