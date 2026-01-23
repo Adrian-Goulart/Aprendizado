@@ -1742,5 +1742,20 @@ Caso não informado, será lançado um Erro de Unparseable.
 
 ---
 
+# 118 - Classes Utilitárias - SimpleDateFormat
 
+O SimpleDateFormat permite que usemos as datas de uma forma mais flexível por meio de caracteres.
 
+```Java
+public class SimpleDateFormatTest01 {
+    public static void main(String[] args) {
+        String pattern = "dd 'de' MMMM 'de' YYYY";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        System.out.println(sdf.format(new Date()));
+    }
+}
+```
+
+Neste exemplo ele mostrará o dia/mês/ano. O que está entre aspas simples, é ignorado do pattern para mostrar  a data.
+
+[Para verificar os caracteres](https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html)
