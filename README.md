@@ -1804,3 +1804,34 @@ A classe LocalDate é imutável, ou seja, não muda e sim é criando um outro ob
 
 ---
 
+# 120 - Classes Utilitárias - LocalTime
+
+o LocalTime é muito importante quando se trabalha com coleta de dados baseado em datas.
+
+```Java
+public class LocalDatesTest01 {
+    public static void main(String[] args) {
+        LocalTime time = LocalTime.of(16, 5, 30);
+        System.out.println("Segundos: " + time.getSecond());
+        System.out.println("Minuto: " + time.getMinute());
+        System.out.println("Hora: " + time.getHour());
+        System.out.println("Tempo: " + time);
+    }
+}
+```
+
+Também é possível utilizar o *ChronicalField*:
+
+```Java
+public class LocalDatesTest01 {
+    public static void main(String[] args) {
+        LocalTime time = LocalTime.of(16, 5, 30);
+		
+        System.out.println("Segundos dia: " + time.get(ChronoField.SECOND_OF_DAY));
+        System.out.println("Minuto dia: " + time.get(ChronoField.MINUTE_OF_DAY));
+        System.out.println("Horas dia: " + time.get(ChronoField.HOUR_OF_DAY));
+    }
+}
+```
+
+---
