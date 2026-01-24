@@ -1835,3 +1835,29 @@ public class LocalDatesTest01 {
 ```
 
 ---
+
+# 121 - Classes Utilitárias - LocalDateTime
+
+*LocalDateTime* também tem métodos iguais ao *LocalTime*. Ele mistura algumas coisas do *LocalDate* com o *LocalTime*.
+
+Sobre LocalDate e LocalTime, caso não se queira pegar o valor diretamente do `.of`, é possível utilizar com uma String e até juntá-los:
+
+```Java
+public class LocalDateTimeTest01 {
+    public static void main(String[] args) {
+        LocalDate date = LocalDate.parse("2025-07-05");
+        LocalTime time = LocalTime.parse("14:52:33");
+        LocalDateTime dateTime = date.atTime(time);
+        LocalDateTime timeDate = time.atDate(date);
+        
+        System.out.println(timeDate);
+        System.out.println(dateTime);
+    }
+}
+
+// Saída: 2025-07-05T14:52:33
+//        2025-07-05T14:52:33
+```
+
+---
+
