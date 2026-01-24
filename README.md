@@ -1759,3 +1759,48 @@ public class SimpleDateFormatTest01 {
 Neste exemplo ele mostrará o dia/mês/ano. O que está entre aspas simples, é ignorado do pattern para mostrar  a data.
 
 [Para verificar os caracteres](https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html)
+
+---
+
+# 119 - Classes Utilitárias - LocalDate
+
+A partir da versão 8 o Java implementou versões mais potentes de datas inspiradas pelo ***Joda Time***. Com isso veio várias métodos novos para facilitar o trabalho, como a `LocalDate`, que pode ser inicializada com `of` ou `now`.
+
+```Java
+public class LocalDatesTest01 {
+    public static void main(String[] args) {
+        LocalDate date = LocalDate.of(2026, Month.NOVEMBER, 13);
+        System.out.println("Dia semana: " + date.getDayOfWeek());
+        System.out.println("Dia mês: " + date.getDayOfMonth());
+        System.out.println("Mês: " + date.getMonth());
+        System.out.println("Ano: " + date.getYear());
+        System.out.println("Tamanho mês: " + date.lengthOfMonth());
+        System.out.println("Bissexto: " + date.isLeapYear());
+    }
+}
+
+// Saída: Dia semana: FRIDAY
+//        Dia mês: 13
+//        Mês: NOVEMBER
+//        Ano: 2026
+//        Tamanho mês: 30
+//        Bissexto: false
+```
+
+ Para algo mais específico podemos utilizar a Temporal Field.
+
+```Java
+public class LocalDatesTest01 {
+    public static void main(String[] args) {
+        LocalDate date = LocalDate.of(2026, Month.NOVEMBER, 13);
+		
+        System.out.println(date.get(ChronoField.YEAR));
+        System.out.println(date.get(ChronoField.MONTH_OF_YEAR));
+    }
+}
+```
+
+A classe LocalDate é imutável, ou seja, não muda e sim é criando um outro objeto no qual precisaríamos associa-lo. Recomenda-se mais o uso de LocalDate.
+
+---
+
