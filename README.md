@@ -1918,3 +1918,47 @@ Esta classe é interessante para quando não se precisa trabalhar com dia, mês 
 
 ---
 
+# 123 - Classes Utilitárias - Duration
+
+O Duration tem alguns métodos interessantes como descobrir quanto tempo em horas equivale a tantos dias com o `ofDays` e também o `.between`, como o próprio nome já diz ele calcula o tempo entre dois valores.
+
+```Java
+public class DurationTest01 {
+    public static void main(String[] args) {
+        LocalDateTime now = LocalDateTime.now();  
+        LocalDateTime nowAfterTwoYears = LocalDateTime.now().plusYears(2).plusMinutes(8);
+        
+        Duration d1 = Duration.between(now, nowAfterTwoYears);
+        
+        System.out.println(d1);
+    }
+}
+
+// Saída: PT17520H8M0.000106742S
+```
+
+Nesta saída o "P" significa o período, ano (Y), mês (M), semana (w) e o dia (D), já o "T" é o tempo, hora (H), minuto (M) e segundo (S), Com isto em mente é possível entender que não se passou nenhum ano, mês, semana ou dia, mas se passaram 17520 horas e 8 minutos.
+
+Também podemos utilizar com o *Time*:
+
+```Java
+public class DurationTest01 {
+    public static void main(String[] args) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime nowAfterTwoYears = LocalDateTime.now().plusYears(2).plusMinutes(8);
+        LocalTime timeNow = LocalTime.now();
+        LocalTime timePlus7Hours = LocalTime.now().plusHours(7);
+        
+        Duration d1 = Duration.between(now, nowAfterTwoYears);
+        Duration d2 = Duration.between(timeNow, timePlus7Hours);
+        
+        System.out.println(d1);
+        System.out.println(d2);
+    }
+}
+
+// Saída: PT17520H8M0.000106742S
+//        PT-16H-59M-59.999983818S
+```
+
+Também importante ressaltar que ela não aceita *LocalDate*, pois não suporta segundos
