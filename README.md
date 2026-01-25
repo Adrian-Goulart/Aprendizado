@@ -1861,3 +1861,60 @@ public class LocalDateTimeTest01 {
 
 ---
 
+# 122 - Classes Utilitárias - Instant
+
+A classes *Instant* é bem parecida com a *Date*, enquanto a *Date* conta em milisegundos a partir de  1° de Janeiro de 1970, a instant trabalha com nanosegundos.
+
+Ela é uma classe imutável, ou seja, toda alteração gera uma nova instância.
+
+O interessante da classe instante é que ela não conta o horário localmente e sim em *Zulu Time* que é exatamente a mesma coisa que *UTC*, ou seja, neutro, com isso é possível pegar horários mais precisos para um determinado evento.
+
+```Java
+public class InstantTest01 {
+    public static void main(String[] args) {
+        Instant now = Instant.now();
+        System.out.println("Instant: " + now);
+        System.out.println("LocalDT: " + LocalDateTime.now());
+    }
+}
+
+// Saída: Instant: 2026-01-25T13:36:59.297998913Z
+//        LocalDT: 2026-01-25T10:36:59.339373821
+```
+
+A partir do 'T' é possível verificar a hora e com isso percebe-se que o Zulu Time ou então o UTC é igual a 13h enquanto o localmente é 10h (UTC-3).
+
+Por ser em nanosegundos seu valor não cabe em um long então desta forma foram criadas duas variáveis, a dos segundos e a dos nanosegundos dos segundos.
+
+```Java
+public class InstantTest01 {
+    public static void main(String[] args) {
+        Instant now = Instant.now();
+        System.out.println(now.getEpochSecond());
+        System.out.println(now.getNano());
+    }
+}
+
+// Saída: 1769348938
+//        205174482
+```
+
+A cada um bilhão de nanosegundos é igual a um segundo. Com o `Instant.ofEpochSecond(epochSecond, nanoAdjustment)` podemos somar ou subtrair um total de nanosegundos:
+
+```Java
+public class InstantTest01 {
+    public static void main(String[] args) {
+        Instant now = Instant.now();
+        System.out.println(Instant.ofEpochSecond(5, 1_000_000_000));
+    }
+}
+
+// Saída: 1970-01-01T00:00:06Z
+```
+
+Adicionamos primeiro os segundo e somamos ou subtrairmos uma quantidade em nanosegundos.
+
+Esta classe é interessante para quando não se precisa trabalhar com dia, mês ou ano.
+
+---
+
