@@ -1835,7 +1835,7 @@ public class LocalDatesTest01 {
 ```
 
 ---
-
+	
 # 121 - Classes Utilitárias - LocalDateTime
 
 *LocalDateTime* também tem métodos iguais ao *LocalTime*. Ele mistura algumas coisas do *LocalDate* com o *LocalTime*.
@@ -1996,7 +1996,27 @@ public class PeriodTest01 {
 //        P4Y
 ```
 
-O Period não guarda nenhum valor inferior ao próprio, por exemplo, o *p3* não guarda o valor de dias, o *p5* não guarda o valor de dias, semanas ou meses.
+O Period não guarda nenhum valor diferente ao próprio, por exemplo, o *p3* não guarda o valor de dias, o *p5* não guarda o valor de dias, semanas ou meses.
+
+---
+
+# 125 - Classes Utilitárias - ChronoUnit
+
+Para mostrar o intervalo entre datas podemos utilizar o *ChronoUnit* desta forma:
+
+```Java
+public class ChronoUnitTest01 {
+    public static void main(String[] args) {
+        LocalDateTime birth = LocalDateTime.of(2007, 8, 2, 1, 0);
+        LocalDateTime now = LocalDateTime.now();
+        
+        System.out.println(ChronoUnit.DAYS.between(birth, now));
+        System.out.println(ChronoUnit.WEEKS.between(birth, now));
+        System.out.println(ChronoUnit.MONTHS.between(birth, now));
+        System.out.println(ChronoUnit.YEARS.between(birth, now));
+    }
+}
+```
 
 ---
 
