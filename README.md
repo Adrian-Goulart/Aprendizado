@@ -2020,3 +2020,75 @@ public class ChronoUnitTest01 {
 
 ---
 
+# 126 - Classes Utilitárias - TemporalAdjusters.
+
+Quando quisermos pegar alguma data específica podemos utilizar o `.with()`:
+
+```Java
+public class TemporalAdjustersTest01 {
+    public static void main(String[] args) {
+        LocalDateTime now = LocalDateTime.now();
+        now = now.withDayOfMonth(12); // Dia do mês
+        now = now.withYear(2027); // Ano
+        now = now.withMonth(5); // Mês
+        System.out.println(now);
+        System.out.println(now.getDayOfWeek());
+    }
+}
+
+// Saída: 2027-05-12T16:38:25.980841748
+//        WEDNESDAY
+```
+
+Também é possível com o *ChronoField*:
+
+```Java
+public class TemporalAdjustersTest01 {
+    public static void main(String[] args) {
+        LocalDateTime now = LocalDateTime.now();
+		now = now.with(ChronoField.MONTH_OF_YEAR, 7); // Mês
+		
+        System.out.println(now);
+        System.out.println(now.getDayOfWeek());
+    }
+}
+
+// Saída: 2026-07-26T16:43:24.957819289
+//        SUNDAY
+
+```
+
+ Desta forma não viramos os campos de forma contínua, diferentemente de somando.
+
+O *TemporalAdjusters* possui alguns métodos uteis, como:
+
+```Java
+public class TemporalAdjustersTest01 {
+    public static void main(String[] args) {
+        LocalDateTime now = LocalDateTime.now();
+        
+        now = LocalDateTime.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
+        System.out.println(now);
+        System.out.println(now.getDayOfWeek());
+        
+        now = LocalDateTime.now().with(TemporalAdjusters.next(now.getDayOfWeek()));
+        System.out.println(now);
+        System.out.println(now.getDayOfWeek());
+        
+        now = LocalDateTime.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        System.out.println(now);
+        System.out.println(now.getDayOfWeek());
+        
+        now = LocalDateTime.now().with(TemporalAdjusters.previous(now.getDayOfWeek()));
+        System.out.println(now);
+        System.out.println(now.getDayOfWeek());
+        
+        now = LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth());
+        System.out.println(now);
+        System.out.println(now.getDayOfWeek());
+    }
+}
+```
+
+---
+
