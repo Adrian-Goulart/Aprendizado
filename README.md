@@ -1961,4 +1961,42 @@ public class DurationTest01 {
 //        PT-16H-59M-59.999983818S
 ```
 
-Também importante ressaltar que ela não aceita *LocalDate*, pois não suporta segundos
+Também importante ressaltar que ela não aceita *LocalDate*, pois não suporta segundos.
+
+---
+
+# 124 - Classes Utilitárias - Period
+
+A classe Period já trabalha com datas, diferentemente do Duration, logo, não é possível utilizar LocalDateTime ou LocalTime.
+
+```Java
+public class PeriodTest01 {
+    public static void main(String[] args) {
+        LocalDate now = LocalDate.now();
+        LocalDate nowAfterTwoYears = LocalDate.now().plusYears(2);
+        
+        Period p1 = Period.between(now, nowAfterTwoYears);
+        Period p2 = Period.ofDays(5);
+        Period p3 = Period.ofWeeks(7);
+        Period p4 = Period.ofMonths(3);
+        Period p5 = Period.ofYears(4);
+        
+        System.out.println(p1);
+        System.out.println(p2);
+        System.out.println(p3);
+        System.out.println(p4);
+        System.out.println(p5);
+    }
+}
+
+// Saída: P2Y
+//        P5D
+//        P49D
+//        P3M
+//        P4Y
+```
+
+O Period não guarda nenhum valor inferior ao próprio, por exemplo, o *p3* não guarda o valor de dias, o *p5* não guarda o valor de dias, semanas ou meses.
+
+---
+
