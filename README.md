@@ -2092,3 +2092,84 @@ public class TemporalAdjustersTest01 {
 
 ---
 
+# 127 - Classes Utilitárias - TemporalAdjuster
+
+Classe modelo de negócio:
+
+```Java
+class ObterProximoDiaUtil implements TemporalAdjuster {
+    @Override  
+    public Temporal adjustInto(Temporal temporal) {
+        DayOfWeek dayOfWeek = DayOfWeek.of(temporal.get(ChronoField.DAY_OF_WEEK));
+        int addDays;  
+        switch (dayOfWeek) {
+            case THURSDAY:
+                addDays = 4;
+                break;
+            case FRIDAY:
+                addDays = 3;
+                break;
+            case SATURDAY:
+                addDays = 2;
+                break;
+            default:
+                addDays = 1;
+                break;
+        }
+        return temporal.plus(addDays, ChronoUnit.DAYS);
+    }
+}
+```
+
+Classe main:
+
+```Java
+public class TemporalAdjusterTest01 {
+    public static void main(String[] args) {
+        LocalDate today = LocalDate.now();
+        System.out.println(today);
+        System.out.println(today.getDayOfWeek());
+        
+        System.out.println("-------------------------");
+        
+        today = LocalDate.now().with(new ObterProximoDiaUtil());
+        System.out.println(today);
+        System.out.println(today.getDayOfWeek());
+        
+        System.out.println("-------------------------");
+        
+        today = LocalDate.now().withDayOfMonth(29).with(new ObterProximoDiaUtil());
+        System.out.println(today);
+        System.out.println(today.getDayOfWeek());
+        
+        System.out.println("-------------------------");
+        
+        today = LocalDate.now().withDayOfMonth(30).with(new ObterProximoDiaUtil());
+        System.out.println(today);
+        System.out.println(today.getDayOfWeek());
+        
+        System.out.println("-------------------------");
+          
+        today = LocalDate.now().withDayOfMonth(31).with(new ObterProximoDiaUtil());
+        System.out.println(today);
+        System.out.println(today.getDayOfWeek());
+    }
+}
+
+// Saída: 2026-01-28
+//        WEDNESDAY
+//        -------------------------
+//        2026-01-29
+//        THURSDAY
+//        -------------------------
+//        2026-02-02
+//        MONDAY
+//        -------------------------
+//        2026-02-02
+//        MONDAY
+//        -------------------------
+//        2026-02-02
+//        MONDAY
+```
+
+Quando se utiliza o `.with()` ele automaticamente chama o `adjustInto()`, portanto quando se passa um objeto que é um *TemporalAdjuster* ele vai chamar o `adjustInto()`.
