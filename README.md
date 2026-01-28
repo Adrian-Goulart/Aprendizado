@@ -2173,3 +2173,126 @@ public class TemporalAdjusterTest01 {
 ```
 
 Quando se utiliza o `.with()` ele automaticamente chama o `adjustInto()`, portanto quando se passa um objeto que é um *TemporalAdjuster* ele vai chamar o `adjustInto()`.
+
+---
+
+# 128 - Classes Utilitárias - ZonedDateTime, ZoneId, OffsetDateTime
+
+As zonas são faixas no qual determinam os fusos horários em determinadas localidades.
+
+Podemos ver as zonas disponíveis no Java com o `ZoneId` da seguinte forma:
+
+```Java
+public class ZoneTest01 {
+    public static void main(String[] args) {
+        Map<String, String> shortIds = ZoneId.SHORT_IDS;
+        System.out.println(shortIds);
+    }
+}
+```
+
+Também podemos pegar a zona padrão do sistema com `ZoneId.systemDefault()`:
+
+```Java
+public class ZoneTest01 {
+    public static void main(String[] args) {
+        System.out.println(ZoneId.systemDefault());
+    }
+}
+
+// Saída: America/Sao_Paulo
+```
+
+Para pegar a zona de uma localidade específica podemos utilizar o `ZoneId.of` e utiliza-lo com o *LocalDateTime* com o método `atZone`:
+
+```Java
+public class ZoneTest01 {
+    public static void main(String[] args) {
+        ZoneId tokyoZone = ZoneId.of("Asia/Tokyo");
+        
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(now);
+        ZonedDateTime zonedDateTime = now.atZone(tokyoZone);  
+		System.out.println(zonedDateTime);
+    }
+}
+
+// Saída: 2026-01-28T18:39:57.283912451
+//        2026-01-28T18:39:57.283912451+09:00[Asia/Tokyo]
+```
+
+O horário não é descontado na hora, mas nos é avisado que para chegar a tal horário precisaríamos somar ou subtrair tal quantidade de horas.
+
+Vale lembrar que o `ZoneId.of()` tem de estar de acordo com as zonas do Java.
+
+Para vermos com o valor já aplicado utilizamos a classe `Instant`:
+
+```Java
+public class ZoneTest01 {
+    public static void main(String[] args) {
+        Instant instant = Instant.now();
+        System.out.println(instant);
+        
+        ZonedDateTime zonedDateTime2 = instant.atZone(tokyoZone);
+        System.out.println(zonedDateTime2);
+    }  
+}
+
+// Saída: 2026-01-28T22:06:59.185473064Z
+//        2026-01-29T07:06:59.185473064+09:00[Asia/Tokyo]
+```
+
+Quando se sabe o horário mas não a zona podemos utilizar a classe `ZoneOffset()`. Ela permite utilizar horários com valores mínimos e máximos de -18:00 e 18:00 respectivamente.
+
+```Java
+public class ZoneTest01 {
+    public static void main(String[] args) {
+        ZoneOffset zoneOffset = ZoneOffset.of("-05:00");
+        OffsetDateTime offsetDateTime = now.atOffset(zoneOffset);
+        System.out.println(offsetDateTime);
+    }
+}
+
+// Saída: 2026-01-28T19:13:50.482127974-05:00
+```
+
+Ou também podemos fazer desta forma:
+
+```Java
+public class ZoneTest01 {
+    public static void main(String[] args) {
+        OffsetDateTime offsetDateTime2 = OffsetDateTime.of(now, zoneOffset);
+        System.out.println(offsetDateTime2);
+    }
+}
+
+// Saída: 2026-01-28T19:13:50.482127974-05:00
+```
+
+Também podemos pegar calendários como o calendário Japonês:
+
+```Java
+public class ZoneTest01 {
+    public static void main(String[] args) {
+        JapaneseDate japaneseDate = JapaneseDate.from(LocalDate.now());
+		System.out.println(japaneseDate);
+    }
+}
+
+// Saída: Japanese Reiwa 8-01-28
+```
+
+Ou de até então alguma outra data:
+
+```Java
+public class ZoneTest01 {
+    public static void main(String[] args) {
+        LocalDate japaneaseDateTime = LocalDate.of(1900, 4, 2);
+		JapaneseDate japaneseDate2 = JapaneseDate.from(japaneaseDateTime);
+		System.out.println(japaneseDate2);
+    }
+}
+
+// Saída: Japanese Meiji 33-04-02
+```
+
