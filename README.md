@@ -2393,3 +2393,52 @@ public class DateTimeFormatterTest01 {
 //        29-01-2026
 //        2026-01-29
 ```
+
+---
+
+# 130 - Classes Utilitárias - ResourceBundle
+
+Com um ResourceBundle é possível traduzir labels das páginas.
+
+Para utiliza-lo devemos criar um aquivo na pasta ***src***. Seu **nome base** não importa de fato, mas o que vem depois é de grande importância, deve se colocar a localização em língua e país separadas por "\_"  e logo após `.properties`, por exemplo, `messages_pt_BR.properties`. 
+
+Este aquivo funciona como chave e valor, ou seja, uma chave única para tal valor.
+
+```properties
+# para comentários1
+! para comentários2
+  
+hello = Olá
+good.morning = Bom Dia!
+```
+
+Com isto utilizamos a classe ResourceBundle e o método `.getBundle(baseName, Locale)` para pegar estes valores:
+
+```Java
+public class ResourceBundleTest01 {
+    public static void main(String[] args) {
+        ResourceBundle.getBundle("messages", new Locale("pt", "BR"));
+        System.out.println(bundle.getString("hello"));
+        System.out.println(bundle.getString("good.morning"));
+    }
+}
+
+// Saída: Olá
+//        Bom Dia!
+```
+
+Sobre isso o Java tem umas regrinhas para saber qual ele deve pegar.
+Supondo que nossa localização é "pt-BR", o Java tentará procurar por `messages_pt_BR.properties` se não achar, irá procurar por `messages_pt.properties`, se não achar, irá tentar procurar pelo padrão do seu sistema e se não achar, irá procurar por um aquivo no qual tenha o nome base `messages.properties`.
+
+Exemplo supondo que utilizo o site em outra língua:
+
+```Java
+// Locale("ja", "JP"); --> Uso o site
+// messages_ja_JP.properties
+// messages_ja.properties
+// messages_pt_BR.properties --> Padrão do Sistema
+// messages_pt.properties
+// messages.properties --> Último callback
+```
+
+---
