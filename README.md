@@ -2505,5 +2505,54 @@ public class PatternMatcherTest01 {
 
 ---
 
+# 132 - Classes Utilitárias - Regex pt 02 - Pattern e Matcher - Meta caracteres
 
+Os meta caracteres são nos ajudam a filtrar pelo que procuramos, como somente dígitos ou o que não for dígitos. Contudo, precisaríamos alterar nosso *regex* e colocar o meta caractere que desejamos.
+
+Alguns meta caracteres:
+
+>\d --> Todos os dígitos  
+>\D --> Tudo o que não é dígito  
+>\s --> Espaços em branco (\t \n \f \r são considerados espaços em branco)  
+>\S --> Todos menos os espaços em branco  
+>\w --> a-z A-Z, dígitos e _  
+  \W --> Tudo que não pertence ao \w
+
+Exemplo de uso:
+
+```Java
+public class PatternMatcherTest01 {
+    public static void main(String[] args) {
+        String regex = "\\S";
+        String texto = "Stellar Stellar";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(texto);
+        System.out.println("Texto:  "+texto);
+        System.out.println("Índice: 0123456789");
+        System.out.println("Regex: "+regex);
+        System.out.println("Posições encontradas:");
+        
+        while (matcher.find()) {
+            System.out.print(matcher.start()+ " ");
+        }
+    }
+}
+
+// Saída: 0 S
+//        1 t
+//        2 e
+//        3 l
+//        4 l
+//        5 a
+//        6 r
+//        8 S
+//        9 t
+//        10 e
+//        11 l
+//        12 l
+//        13 a
+//        14 r
+```
+
+---
 
