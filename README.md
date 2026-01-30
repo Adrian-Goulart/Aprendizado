@@ -2588,3 +2588,47 @@ public class PatternMatcherTest03 {
 Também podemos fazer \[A-J] \[0-9] para ir de um a outro.
 
 ---
+
+# 134 - Classes Utilitárias - Regex pt 04 - Pattern e Matcher - Quantificadores pt 01
+
+Os quantificadores são determinadas letras que irão pegar determinada expressão baseada na quantidade que o meta caractere representa
+
+Quantificadores:
+> // ? zero ou uma  
+> // * Zero ou mais  
+> // + uma ou mais  
+> // {x, y} de x até y  
+> // () Agrupamento  
+> // | OU  
+> // $ "Fim de linha"
+
+Por exemplo, para pegarmos valores hexagonais **válidos** em um texto podemos fazer:
+
+```Java
+public class PatternMatcherTest04 {
+    public static void main(String[] args) {  
+        String regex = "0[xX]([0-9a-fA-F])+(\\s|$)";
+        String texto = "12 0x 0X 0xFFABC 0x10G 0x1";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(texto);
+        System.out.println("Texto:  " + texto);
+        System.out.println("Índice: 0123456789");
+        System.out.println("Regex: " + regex);
+        System.out.println("Posições encontradas:");
+        
+        while (matcher.find()) {
+            System.out.println(matcher.start() + " " + matcher.group());
+        }
+    }
+}
+
+// Saída: Texto:  12 0x 0X 0xFFABC 0x10G 0x1
+//        Índice: 0123456789
+//        Regex: 0[xX]([0-9a-fA-F])+(\s|$)
+//        Posições encontradas:
+//        9 0xFFABC 
+//        23 0x1
+```
+
+---
+
