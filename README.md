@@ -2442,3 +2442,68 @@ Exemplo supondo que utilizo o site em outra língua:
 ```
 
 ---
+
+# 131 - Classes Utilitárias - Regex pt 01 - Pattern e Matcher
+
+As expressões regulares utilizam símbolos para encontrar padrões em textos e também para validações sintáticas.
+
+Para fazer isso iremos utilizar as Classes `Pattern` e `Matcher`. Criaremos uma string chamada '*regex*' (Regular Expressions), ela vai ser nossa expressão regular. A classe *Pattern* será o nosso padrão e a *Matcher* será a que vai encontrar o padrão.
+
+```Java
+public class PatternMatcherTest01 {
+    public static void main(String[] args) {
+        String regex = "su";
+        String texto = "gohotekitobikatanosusume";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(texto);
+        System.out.println("Texto: "+texto);
+        System.out.println("Índice: 32131241");
+        System.out.println("Regex: "+regex);
+        System.out.println("Posições encontradas");
+        
+        while (matcher.find()) {
+            System.out.println(matcher.start()+ " ");
+        }
+    }
+}
+
+// Saída: Texto:  gohotekitobikatanosusume
+//        Índice: 0123456789
+//        Regex: su
+//        Posições encontradas:
+//        18 20
+```
+
+Enquanto o *matcher* encontrar o regex, vai nos exibir o início de onde começa ele, sendo que o começo do texto é 0.
+
+MAS temos problema, quando se encontra uma sequência, o *matcher* começa a procurar pelo final dela:
+
+```Java
+public class PatternMatcherTest01 {
+    public static void main(String[] args) {
+        String regex = "aba";
+        String texto = "abababa";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(texto);
+        System.out.println("Texto:  "+texto);
+        System.out.println("Índice: 0123456789");
+        System.out.println("Regex: "+regex);
+        System.out.println("Posições encontradas:");
+        
+        while (matcher.find()) {
+            System.out.print(matcher.start()+ " ");
+        }
+    }
+}
+
+// Saída: Texto:  abababa
+//        Índice: 0123456789
+//        Regex: aba
+//        Posições encontradas:
+//        0 4 
+```
+
+---
+
+
+
