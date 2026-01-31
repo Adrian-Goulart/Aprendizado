@@ -2712,3 +2712,37 @@ public class PatternMatcherTest04 {
 Outro caractere é o `^`. Ele retorna o começo da linha no qual seja igual ao que foi passado após ele. Podemos usa-lo como negação e para isso tem de estar dentro do `[^Odo]` desta forma ele vai procurar tudo que não for "Odo"
 
 Também foi apresentado o site https://regexr.com/ para auxiliar.
+
+---
+
+# 137 - Classes Utilitárias - Scanner - Tokens e Delimitadores
+
+Também podemos separar um texto em partes sem precisar de iterar sobre um array de Strings, isto é possível com o `Scanner` e de uma forma mais poderosa, pois caso houver um valor booleano ou inteiro ou outro em String, podemos pega-lo e transforma-lo também.
+
+```Java
+public class ScannerTest02 {
+    public static void main(String[] args) {
+        String texto = "Frieren, Fern, Stark, 1000, true";
+        Scanner scanner = new Scanner(texto);
+        scanner.useDelimiter(",");
+          
+        while (scanner.hasNext()) {
+            if (scanner.hasNextInt()) {
+                int i = scanner.nextInt();
+                System.out.println("Int: " + i);
+            } else if (scanner.hasNextBoolean()) {
+                boolean bool = scanner.nextBoolean();
+                System.out.println("Boolean: " + bool);
+            } else {
+                System.out.println(scanner.next().trim());
+            }
+        }
+    }
+}
+
+// Saída: Frieren
+//        Fern
+//        Stark
+//        1000
+//        true
+```
