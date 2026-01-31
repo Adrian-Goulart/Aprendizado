@@ -2594,6 +2594,7 @@ Também podemos fazer \[A-J] \[0-9] para ir de um a outro.
 Os quantificadores são determinadas letras que irão pegar determinada expressão baseada na quantidade que o meta caractere representa
 
 Quantificadores:
+
 > // ? zero ou uma  
 > // * Zero ou mais  
 > // + uma ou mais  
@@ -2632,3 +2633,82 @@ public class PatternMatcherTest04 {
 
 ---
 
+# 135 - Classes Utilitárias - Regex pt 05 - Pattern e Matcher - Quantificadores pt 02
+
+Uma "maneira" (não correta, somente exemplo para fixação) de verificação de gmail seria:
+
+```Java
+    public static void main(String[] args) {
+        String regex = "([a-zA-Z0-9\\._-])+@([a-zA-Z])+(\\.([a-zA-Z]+))+";
+        String texto = "nezukokamado@hotmail.com, 16killuazoldyck@gmail.com, !$@kageyama@mail.br, senku@gmail.com.br, hinata@mail";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(texto);
+        System.out.println("Texto:  " + texto);
+        System.out.println("Índice: 0123456789");
+        System.out.println("Regex: " + regex);
+        System.out.println("Posições encontradas:");
+        
+        while (matcher.find()) {
+            System.out.println(matcher.start() + " " + matcher.group());
+        }
+    }
+}
+```
+
+***Tentando*** explicar: ele vai selecionar todos os caracteres de "A-Z" minúsculo e maiúsculo e que também contenham números e "/" ou ". _ -" (usa-se \\\\. para considerar o "." e não o quantificador), como é um padrão que se pode repetir mais de uma vez colocamos o "+". Logo após verificamos se tem o "@" e continuamos a validar se possui letras de "A-Z" minúsculo e maiúsculo e como também se repete mais de uma vez usamos o "+". Verificamos se tem o "." e continuamos com a validação.
+
+Podemos pegar uma String separada e compara-la diretamente com o regex através do `.matches(regex)`:
+
+```Java
+public class PatternMatcherTest04 {
+    public static void main(String[] args) {
+        String regex = "([a-zA-Z0-9\\._-])+@([a-zA-Z])+(\\.([a-zA-Z]+))+";
+        String texto = "nezukokamado@hotmail.com, 16killuazoldyck@gmail.com, !$@kageyama@mail.br, senku@gmail.com.br, hinata@mail";
+        System.out.println("!$@kageyama@mail.br".matches(regex));
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(texto);
+        System.out.println("Texto:  " + texto);
+        System.out.println("Índice: 0123456789");
+        System.out.println("Regex: " + regex);
+        System.out.println("Posições encontradas:");
+        
+        while (matcher.find()) {
+            System.out.println(matcher.start() + " " + matcher.group());
+        }
+    }
+}
+
+// Saída: false
+//        Texto:  nezukokamado@hotmail.com, 16killuazoldyck@gmail.com, //        !$@kageyama@mail.br, senku@gmail.com.br, hinata@mail
+//        Índice: 0123456789
+//        Regex: ([a-zA-Z0-9\._-])+@([a-zA-Z])+(\.([a-zA-Z]+))+
+//        Posições encontradas:
+//        0 nezukokamado@hotmail.com
+//        26 16killuazoldyck@gmail.com
+//        56 kageyama@mail.br
+//        74 senku@gmail.com.br
+```
+
+Podemos utilizar o `texto.split("caractere")` assim retornando um array e utilizamos o `.trim` para remover espaços em branco
+
+```java
+public class PatternMatcherTest04 {
+    public static void main(String[] args) {
+        String regex = "([a-zA-Z0-9\\._-])+@([a-zA-Z])+(\\.([a-zA-Z]+))+";
+        String texto = "nezukokamado@hotmail.com, 16killuazoldyck@gmail.com, !$@kageyama@mail.br, senku@gmail.com.br, hinata@mail";
+        System.out.println("!$@kageyama@mail.br".matches(regex));
+		System.out.println(texto.split(",")[1].trim());
+    }
+}
+
+// Saída: false
+//        16killuazoldyck@gmail.com
+```
+
+---
+
+# 136 - Classes Utilitárias - Regex pt 06 - Pattern e Matcher - Anchor
+
+Outro caractere é o `^`. Ele retorna o começo da linha no qual seja igual ao que foi passado após ele. Podemos usa-lo como negação e para isso tem de estar dentro do `[^Odo]` desta forma ele vai procurar tudo que não for "Odo"
+
+Também foi apresentado o site https://regexr.com/ para auxiliar.
