@@ -2974,3 +2974,30 @@ Com o BufferedWriter não se recomenda o "\n" para quebrar linhas, pois alguns s
 
 ---
 
+# 142 - Classes Utilitárias - IO pt 05 - BufferedReader
+
+O BufferedReader também funciona de forma bastante parecida com o FileReader, sua diferença é que ele pode ler uma linha inteira e ao invés de retornar -1, ele retorna null:
+
+```Java
+public class BufferedReaderTest01 {
+    public static void main(String[] args) {
+        File file = new File("file.txt");
+        
+        try (FileReader fr = new FileReader(file);
+             BufferedReader br = new BufferedReader(fr)) {
+            String linha;
+            
+            while ((linha = br.readLine()) != null) {
+                System.out.print(linha);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+---
+
+
+
