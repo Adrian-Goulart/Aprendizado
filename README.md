@@ -2746,3 +2746,64 @@ public class ScannerTest02 {
 //        1000
 //        true
 ```
+
+---
+
+# 138 - Classes Utilitárias - IO pt 01 - File
+
+Para criar um objeto do tipo *File* e informamos seu caminho
+
+```Java
+public class FileTest01 {
+    public static void main(String[] args) {
+        File file = new File("/home/adrian/Testes/Pasta3/ArquivosP3");
+    }
+}
+```
+
+Para salvar na pasta atual só informar o nome, caso queria uma em específica, precisa informar o caminho absoluto.
+
+Para de fato criar um arquivo, utiliza-se o método `.createNewFile()`. Por ele lançar uma exceção, colocamos ele dentro de um *try catch*.
+
+```Java
+public class FileTest01 {
+    public static void main(String[] args) {
+        File file = new File("/home/adrian/Testes/Pasta3/ArquivosP3"); 
+        
+        try {
+            boolean isCreated = file.createNewFile();
+            System.out.println(isCreated);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Podemos deletar com o `file.delete()`, verificar se existe com o `file.exists()`, verificar se é oculto com o `file.isHidden()`, verificar seu caminho com `file.getPath()` e seu caminho absoluto com o `file.getAbsolutePah()`, verificar se é um arquivo ou diretório com `file.isFile()` e `file.isDirectory()` e também verificar a sua última vez modificado com o `file.lastModified()`, mas seu valor retornado é um long a partir de 1970, então podemos utilizar o *Date*.
+
+```Java
+public class FileTest01 {
+    public static void main(String[] args) {
+        File file = new File("/home/adrian/Testes/Pasta3/ArquivosP3");
+        try {
+            boolean isCreated = file.createNewFile();
+            System.out.println("Criado: " + isCreated);
+            System.out.println("Caminho: " + file.getPath());
+            System.out.println("Caminho Absoluto: " + file.getAbsoluteFile());
+            System.out.println("Oculto: " + file.isHidden());
+            System.out.println("Arquivo: " + file.isFile());
+            System.out.println("Diretório: " + file.isDirectory());
+            System.out.println("Modificado: " + new Date(file.lastModified()));
+            
+            boolean exists = file.exists();
+            if (exists) {
+                System.out.println("Deletado: " + file.delete());
+            }
+            
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
