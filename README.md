@@ -2999,5 +2999,95 @@ public class BufferedReaderTest01 {
 
 ---
 
+# 143 - Classes Utilitárias - IO pt 06 - File para diretórios
 
+Podemos criar diretórios também com o `.mkdir()`:
 
+```Java
+public class FileTest02 {
+    public static void main(String[] args) {
+        File directory = new File("pasta");
+        boolean isCreated = directory.mkdir();
+        System.out.println(isCreated);
+    }
+}
+```
+
+Para criar um arquivo dentro do diretório temos duas maneiras:
+1: 
+
+```Java
+public class FileTest02 {
+    public static void main(String[] args) throws IOException {
+        File directory = new File("pasta");
+        boolean isDirectoryCreated = directory.mkdir();
+        System.out.println(isDirectoryCreated);
+        File archive = new File("/home/adrian/IdeaProjects/Praticando-Java/pasta/arquivo.txt");
+        boolean isArchiveCreated = archive.createNewFile();
+        System.out.println(isArchiveCreated);
+    }
+}
+```
+
+2:
+
+```Java
+public class FileTest02 {
+    public static void main(String[] args) throws IOException {
+        File directory = new File("pasta");
+        boolean isDirectoryCreated = directory.mkdir();
+        System.out.println(isDirectoryCreated);
+        File archive = new File(directory, "arquivo.txt");
+        boolean isArchiveCreated = archive.createNewFile();
+        System.out.println(isArchiveCreated);
+    }
+}
+```
+
+Nesta segunda maneira, informamos quem já tem referência para onde queremos e logo após o nome do arquivo.
+
+Para renomear arquivos criaremos um no File aonde será o local e o nome do arquivo, depois utilizamos o método `.renameTo(File)` para renomeá-lo:
+
+```Java
+public class FileTest02 {
+    public static void main(String[] args) throws IOException {
+        File directory = new File("pasta");
+        boolean isDirectoryCreated = directory.mkdir();
+        System.out.println(isDirectoryCreated);
+        
+        File archive = new File(directory, "arquivo.txt");
+        boolean isArchiveCreated = archive.createNewFile();
+        System.out.println(isArchiveCreated);
+        
+        File renamedArchive = new File(directory, "arquivo-renomeado");
+        boolean isArchieveRenamed = archive.renameTo(renamedArchive);
+        System.out.println(isArchieveRenamed);
+    }
+}
+```
+
+E para diretórios é a mesma lógica:
+
+```Java
+public class FileTest02 {
+    public static void main(String[] args) throws IOException {
+        File directory = new File("pasta");
+        boolean isDirectoryCreated = directory.mkdir() 
+        System.out.println(isDirectoryCreated);
+        
+        File archive = new File(directory, "arquivo.txt");
+        boolean isArchiveCreated = archive.createNewFile();
+        System.out.println(isArchiveCreated);
+        
+        File renamedArchive = new File(directory, "arquivo-renomeado");
+        boolean isArchieveRenamed = archive.renameTo(renamedArchive);
+        System.out.println(isArchieveRenamed);
+        
+        File renamedDirectory = new File("pasta-renomeada");
+        boolean isDirectoryRenamed = directory.renameTo(renamedDirectory);
+        System.out.println(isDirectoryRenamed);
+    }
+}
+```
+
+---
