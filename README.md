@@ -2807,3 +2807,72 @@ public class FileTest01 {
     }
 }
 ```
+
+---
+
+# 139 - Classes Utilitárias - IO pt 02 - FileWriter
+
+O Java é bem coeso com esta questão de aquivos, logo tudo tem sua classe separada, e são elas:
+
+- File
+- FileWritter
+- FileReader
+- BufferedWritter
+- BufferedReader
+
+Algo que acontece quando se trabalha com arquivos é que vamos encadear as classes, então passamos um *File* para criar um `FileWritter(file)`. Como também é lançada uma exceção faremos dentro de um `try catch`. 
+
+**IMPORTANTE**: Quando trabalhamos com os arquivos estamos mexendo com o Sistema Operacional e quase sempre que estamos mexendo com o sistema operacional temos que fechar a operação, logo, podemos fazer isto com um *try with resources* (***Para isto é necessário que seja um closeable***).
+
+```Java
+public class FileWritterTest01  {
+    public static void main(String[] args) {
+        File file = new File("file.txt");
+        
+        try (FileWriter fw = new FileWriter(file)){
+            fw.write("Os TOP: Yorushika, Zutomayo, Ado, Yoasobi (Tem mais, mas nn vou citar geral)");
+            
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Temos algo a preocupar também, ([analogia feita em aula](https://youtu.be/4wsysT3OxO4?list=PL62G310vn6nFIsOCC0H-C2infYgwm8SWW&t=232)): "Quando abrimos um vídeo do Youtube, temos a barrinha de vídeo, chamamos ela de *buffer*, ela é como se fosse um túnel aonde os dados são recebidos, quando apertamos o play, o browser vai lendo os dados do buffer e nos mostrando e com arquivos é praticamente a mesma coisa, estamos escrevendo e o sistema operacional tem buffer, então existe uma chance de fechar o arquivo e o Sistema Operacional não ter mandado todos os dados deste buffer para  arquivo, então antes de fechar o arquivo, utilizamos o `fw.flush()`, com isso ele "cospe" tudo que há no buffer e quando o método acabar como estamos fazendo com o try with resources o próprio Java irá chamar o close do FileWritter."
+
+```Java
+public class FileWritterTest01  {
+    ￼public static void main(String[] args) {
+        File file = new File("file.txt");
+        
+        ￼try (FileWriter fw = new FileWriter(file)){
+            fw.write("Os TOP: Yorushika, Zutomayo, Ado, Yoasobi (Tem mais, mas nn vou citar geral)");
+            fw.flush();
+            
+        ￼} catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Também é reparável que quando executamos novamente, o arquivo é sobrescrito, caso não seja isto que queira, informamos quando criamos o FileWritter, após inserir o file, um valor Booleano, que será o *Append*.
+
+```Java
+public class FileWritterTest01  {
+    ￼public static void main(String[] args) {
+        File file = new File("file.txt");
+        
+        ￼try (FileWriter fw = new FileWriter(file, true)){
+            fw.write("Os TOP: Yorushika, Zutomayo, Ado, Yoasobi (Tem mais, mas nn vou citar geral)\n");
+            fw.flush();
+            
+        ￼} catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Desta forma não será sobrescrito.
