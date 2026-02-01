@@ -2815,17 +2815,17 @@ public class FileTest01 {
 O Java é bem coeso com esta questão de aquivos, logo tudo tem sua classe separada, e são elas:
 
 - File
-- FileWritter
+- FileWriter
 - FileReader
 - BufferedWritter
 - BufferedReader
 
-Algo que acontece quando se trabalha com arquivos é que vamos encadear as classes, então passamos um *File* para criar um `FileWritter(file)`. Como também é lançada uma exceção faremos dentro de um `try catch`. 
+Algo que acontece quando se trabalha com arquivos é que vamos encadear as classes, então passamos um *File* para criar um `FileWriter(file)`. Como também é lançada uma exceção faremos dentro de um `try catch`. 
 
 **IMPORTANTE**: Quando trabalhamos com os arquivos estamos mexendo com o Sistema Operacional e quase sempre que estamos mexendo com o sistema operacional temos que fechar a operação, logo, podemos fazer isto com um *try with resources* (***Para isto é necessário que seja um closeable***).
 
 ```Java
-public class FileWritterTest01  {
+public class FileWriterTest01  {
     public static void main(String[] args) {
         File file = new File("file.txt");
         
@@ -2839,10 +2839,10 @@ public class FileWritterTest01  {
 }
 ```
 
-Temos algo a preocupar também, ([analogia feita em aula](https://youtu.be/4wsysT3OxO4?list=PL62G310vn6nFIsOCC0H-C2infYgwm8SWW&t=232)): "Quando abrimos um vídeo do Youtube, temos a barrinha de vídeo, chamamos ela de *buffer*, ela é como se fosse um túnel aonde os dados são recebidos, quando apertamos o play, o browser vai lendo os dados do buffer e nos mostrando e com arquivos é praticamente a mesma coisa, estamos escrevendo e o sistema operacional tem buffer, então existe uma chance de fechar o arquivo e o Sistema Operacional não ter mandado todos os dados deste buffer para  arquivo, então antes de fechar o arquivo, utilizamos o `fw.flush()`, com isso ele "cospe" tudo que há no buffer e quando o método acabar como estamos fazendo com o try with resources o próprio Java irá chamar o close do FileWritter."
+Temos algo a preocupar também, ([analogia feita em aula](https://youtu.be/4wsysT3OxO4?list=PL62G310vn6nFIsOCC0H-C2infYgwm8SWW&t=232)): "Quando abrimos um vídeo do Youtube, temos a barrinha de vídeo, chamamos ela de *buffer*, ela é como se fosse um túnel aonde os dados são recebidos, quando apertamos o play, o browser vai lendo os dados do buffer e nos mostrando e com arquivos é praticamente a mesma coisa, estamos escrevendo e o sistema operacional tem buffer, então existe uma chance de fechar o arquivo e o Sistema Operacional não ter mandado todos os dados deste buffer para  arquivo, então antes de fechar o arquivo, utilizamos o `fw.flush()`, com isso ele "cospe" tudo que há no buffer e quando o método acabar como estamos fazendo com o try with resources o próprio Java irá chamar o close do FileWriter."
 
 ```Java
-public class FileWritterTest01  {
+public class FileWriterTest01  {
     ￼public static void main(String[] args) {
         File file = new File("file.txt");
         
@@ -2857,10 +2857,10 @@ public class FileWritterTest01  {
 }
 ```
 
-Também é reparável que quando executamos novamente, o arquivo é sobrescrito, caso não seja isto que queira, informamos quando criamos o FileWritter, após inserir o file, um valor Booleano, que será o *Append*.
+Também é reparável que quando executamos novamente, o arquivo é sobrescrito, caso não seja isto que queira, informamos quando criamos o FileWriter, após inserir o file, um valor Booleano, que será o *Append*.
 
 ```Java
-public class FileWritterTest01  {
+public class FileWriterTest01  {
     ￼public static void main(String[] args) {
         File file = new File("file.txt");
         
@@ -2876,3 +2876,72 @@ public class FileWritterTest01  {
 ```
 
 Desta forma não será sobrescrito.
+
+---
+
+# 140 - Classes Utilitárias - IO pt 03 - FileReader
+
+Assim como o FileWriter, precisamos trabalhar com o File em FileReader.
+
+Para ler um aquivo utilizamos o `.read()`.
+
+```Java
+public class FileReaderTest01 {
+    public static void main(String[] args) {
+        File file = new File("file.txt");
+        
+        try (FileReader fr = new FileReader(file)) {
+            System.out.println(fr.read());
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+Mas desta forma ele retorna somente o primeiro caractere, para isto podemos então criar um Array de caracteres e iterar sobre ele:
+
+```Java
+public class FileReaderTest01 {
+    public static void main(String[] args) {
+        File file = new File("file.txt");
+        
+        try (FileReader fr = new FileReader(file)) {
+            char[] in = new char[40]
+            fr.read(in)
+            
+            for (char c : in) {
+		    System.out.print(c);
+		    
+		    }
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+O problema desta forma é que temos de informar o tamanho do arquivo, mas para resolver isto, sabemos que no final do `.read()` ele retorna -1, logo é possível fazer com que quando um int for igual a -1 ele pare:
+
+```Java
+public class FileReaderTest01 {
+    public static void main(String[] args) {
+        File file = new File("file.txt");
+        
+        try (FileReader fr = new FileReader(file)) {
+            int i;
+            
+            while ((i=fr.read()) != -1) {
+                System.out.print((char) i);
+            }
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+Também fazemos um casting para char.
