@@ -2900,7 +2900,7 @@ public class FileReaderTest01 {
 }
 ```
 
-Mas desta forma ele retorna somente o primeiro caractere, para isto podemos então criar um Array de caracteres e iterar sobre ele:
+Mas desta forma ele retorna somente o primeiro caractere, para isto podemos então criar um Array de caracteres e iterar sobre ele (quando colocado um int, retorna o tamanho):
 
 ```Java
 public class FileReaderTest01 {
@@ -2945,3 +2945,32 @@ public class FileReaderTest01 {
 ```
 
 Também fazemos um casting para char.
+
+---
+
+# 141 - Classes Utilitárias - IO pt 04 - BufferedWriter
+
+A BufferedWriter funciona de maneira bem parecida com o FileWriter, mas ao invés de passar um File, passamos um FileWriter:
+
+```Java
+public class BufferedWriterTest01 {
+    public static void main(String[] args) { 
+        File file = new File("file.txt");
+        
+        try (FileWriter fw = new FileWriter(file, true);
+             BufferedWriter bw = new BufferedWriter(fw)){
+            bw.write("Os TOP: Yorushika, Zutomayo, Ado, Yoasobi");
+            bw.newLine();
+            bw.flush();
+			
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Com o BufferedWriter não se recomenda o "\n" para quebrar linhas, pois alguns sistemas operacionais não reconhecem "\n" como uma forma de quebrar linhas então usamos o `.newLine()`.
+
+---
+
