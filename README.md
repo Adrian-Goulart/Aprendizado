@@ -3316,3 +3316,47 @@ Não faz sentido resolução em absoluto pois ele já é um caminho absoluto.
 
 ---
 
+# 148 - Classes Utilitárias - NIO pt 05 - Relativize
+
+O Relativize ele mostra o caminho necessário de um caminho para o outro:
+
+```Java
+public class RelativizeTest01 {
+    public static void main(String[] args) {
+        Path dir = Paths.get("/home/adrian");
+        Path archieve = Paths.get("/home/adrian/jpops/musics.txt");
+        Path pathToArchieve = dir.relativize(archieve);
+        System.out.println(pathToArchieve);
+    }
+}
+
+// Saída: jpops/musics.txt
+```
+
+Situações:
+
+```Java
+public class RelativizeTest01 {
+    public static void main(String[] args) {
+        Path absolute1 = Paths.get("/home/adrian");
+        Path absolute2 = Paths.get("/usr/games");
+        Path absolute3 = Paths.get("/home/adrian/jpops/musics.txt");
+        Path relative1 = Paths.get("artists");
+        Path relative2 = Paths.get("artists/artists.txt");
+        
+        System.out.println("1- "+absolute1.relativize(absolute3));
+        System.out.println("2- "+absolute3.relativize(absolute1));
+        
+        System.out.println("3- "+absolute1.relativize(absolute2));
+        System.out.println("4- "+relative1.relativize(relative2));
+        
+        System.out.println("5- "+absolute1.relativize(relative1)); // O Java não faz ideia de onde encontrar
+    }
+}
+
+// Saída: 1- jpops/musics.txt
+//        2- ../..
+//        3- ../../usr/games
+//        4- artists.txt
+//        Exception in thread "main" java.lang.IllegalArgumentException: 'other' is different type of Path
+```
