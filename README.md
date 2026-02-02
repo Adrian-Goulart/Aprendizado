@@ -3137,3 +3137,86 @@ public class PathTest01 {
 
 ---
 
+# 145 - Classes Utilitárias - NIO pt 02 - Path, Paths, Files pt 02
+
+Para criar uma pasta faremos:
+
+```Java
+public class PathTest02 {
+    public static void main(String[] args) throws IOException {
+        Path directoryPath = Paths.get("pasta");
+        Path createDirectory = Files.createDirectory(directoryPath);
+    }
+}
+```
+
+Mas desta forma, caso já exista a pasta, será retornado uma exceção, podemos solucionar isto com o `Files.exists(Path)` ou `Files.notExists(Path)`:
+
+```Java
+public class PathTest02 {
+    public static void main(String[] args) throws IOException {
+        Path directoryPath = Paths.get("pasta");
+        if (Files.notExists(directoryPath)) {
+            Path createDirectory = Files.createDirectory(directoryPath);
+        }
+    }
+}
+```
+
+Se o diretório pai não existir, retornará um IOException.
+
+Para criar mais de um diretório usamos o `Files.createDirectories(Path)` (Não lança exceção caso já exista):
+
+```Java
+public class PathTest02 {
+    public static void main(String[] args) throws IOException {
+        Path directoriesPath = Paths.get("pasta", "subpasta");
+        Path createDirectories = Files.createDirectories(directoriesPath);
+    }
+}
+```
+
+Para arquivos podemos criar uma Path com o caminho e informar o caminho com outro Path utilizando o `.toString()`, logo em seguida colocamos o nome do arquivo. Como também é retornado uma exceção colocamos dentro de um `if`.
+
+```Java
+public class PathTest02 {
+    public static void main(String[] args) throws IOException {
+        Path directoriesPath = Paths.get("pasta", "subpasta");
+        Path createDirectories = Files.createDirectories(directoriesPath);
+        
+        Path filePath = Paths.get(directoriesPath.toString(), "file.txt");
+        if (Files.notExists(filePath)) {
+            Path createFile = Files.createFile(filePath);
+        }
+    }
+}
+```
+
+Para copiar arquivos
+
+```Java
+public class PathTest02 {
+    public static void main(String[] args) throws IOException {
+        Path directoryPath = Paths.get("pasta");
+        if (Files.notExists(directoryPath)) {
+            Path createDirectory = Files.createDirectory(directoryPath);
+        }
+        
+        Path directoriesPath = Paths.get("pasta", "subpasta");
+        Path createDirectories = Files.createDirectories(directoriesPath);
+        
+        Path filePath = Paths.get(directoriesPath.toString(), "file.txt");
+        if (Files.notExists(filePath)) {
+            Path createFile = Files.createFile(filePath);
+        }
+        
+        // Copiar
+        
+        Path source = filePath; // Origem
+        Path target = Paths.get(filePath.getParent().toString(), "file_copied.txt"); // Destino que vai ser copiado
+        Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+    }
+}
+```
+
+A fins de compreensão criamos um *source* que é o caminho em que vamos copiar, depois criamos o target que é o destino e o nome do arquivo copiado, então colocamos eles no `Files.copy(source, target)`, para sobrescrever o arquivo existente utilizamos o `StandardCopyOption.REPLACE_EXISTING` em seguida.
