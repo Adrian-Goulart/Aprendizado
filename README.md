@@ -3273,3 +3273,46 @@ public class NormalizeTest01 {
 ```
 
 ---
+
+# 147 - Classes Utilitárias - NIO pt 04 - Resolvendo Paths
+
+O Resolve tenta resolver os caminhos juntando eles:
+
+```Java
+public class ResolveTest03 {
+    public static void main(String[] args) {
+        Path path1 = Paths.get("home/adrian");
+        Path path2 = Paths.get("test/arquivo.txt");
+        Path resolve = path1.resolve(path2);
+        System.out.println(resolve);
+    }
+}
+
+// Saída: home/adrian/test/arquivo.txt
+```
+
+Mas devemos ter cuidado sobre como usa-lo, porque ele junta os Path's mas temos algumas situações entre caminho absolutos e relativos:
+
+```Java
+public class ResolveTest03 {
+    public static void main(String[] args) {
+        Path absolute = Paths.get("/home/adrian");
+        Path relative = Paths.get("teste");
+        Path file = Paths.get("text.txt");
+        
+        System.out.println("1 " + absolute.resolve(relative)); // Certo
+        System.out.println("2 " + absolute.resolve(file)); // Certo
+        
+        System.out.println("3 " + relative.resolve(absolute)); // Resolução em absoluto
+        System.out.println("4 " + relative.resolve(file)); // Certo
+        
+        System.out.println("5 " + file.resolve(absolute)); // Resolução em absoluto
+        System.out.println("6 " + file.resolve(relative)); // Certo
+    }
+}
+```
+
+Não faz sentido resolução em absoluto pois ele já é um caminho absoluto.
+
+---
+
