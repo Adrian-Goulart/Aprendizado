@@ -763,7 +763,7 @@ Existem dois tipos de exceções, *Checked* e *Unchecked*. As exceções *checke
 
 # 97 - Exceções pt 03 - Exception
 
-Nesta foi feito um teste de exceção *IOException*, para isso é necessário criar um arquivo. Para criar um arquivo criaremos um objeto da classe *File* informando o caminho do arquivo (pode mudar dependendo do Sistema Operacional) e logo após um de seus métodos.
+Nesta foi feito um teste de exceção *IOException*, para isso é necessário criar um arquivo. Para criar um arquivo criaremos um objeto da classe *File* informando o caminho do arquivo (pode mudar dependendo do Sistema Operacional, no meu caso Ubuntu) e logo após um de seus métodos.
 
 **Teoricamente** ficaria assim:
 ```Java
@@ -3220,3 +3220,56 @@ public class PathTest02 {
 ```
 
 A fins de compreensão criamos um *source* que é o caminho em que vamos copiar, depois criamos o target que é o destino e o nome do arquivo copiado, então colocamos eles no `Files.copy(source, target)`, para sobrescrever o arquivo existente utilizamos o `StandardCopyOption.REPLACE_EXISTING` em seguida.
+
+---
+
+# 146 - Classes Utilitárias - NIO pt 03 - Normalização
+
+No Ubuntu no terminal usamos `../../` para voltar pastar, mas isto não funcionaria caso colocássemos em um caminho no Java:
+
+```Java
+public class NormalizeTest01 {
+    public static void main(String[] args) {
+        String directory = "home/adrian/arquivos";
+        String textArchieve = "../texto.txt";
+        Path path = Paths.get(directory, textArchieve);
+        System.out.println(path);
+    }
+}
+
+// Saída: home/adrian/arquivos/../texto.txt
+```
+
+Por isto então utilizamos os `.normalize()`:
+
+```Java
+public class NormalizeTest01 {
+    public static void main(String[] args) {
+        String directory = "home/adrian/arquivos";
+        String textArchieve = "../texto.txt";
+        Path path = Paths.get(directory, textArchieve);
+        System.out.println(path);
+        System.out.println(path.normalize());
+    }
+}
+
+// Saída: home/adrian/arquivos/../texto.txt
+//        home/adrian/texto.txt
+```
+
+Outro exemplo:
+
+```Java
+public class NormalizeTest01 {
+    public static void main(String[] args) {
+        Path path2 = Paths.get("home/./adrian/./pasta");
+        System.out.println(path2);
+        System.out.println(path2.normalize());
+    }
+}
+
+// Saída: home/./adrian/./pasta
+//        home/adrian/pasta
+```
+
+---
