@@ -3091,3 +3091,49 @@ public class FileTest02 {
 ```
 
 ---
+
+# 144 - Classes Utilitárias - NIO pt 01 - Path, Paths, Files pt 01
+
+O *Path* é uma interface que foi feita para substituir o *File*, porque o *Path* tem as mesmas funcionalidades.
+
+Para criar um *Path* precisa de uma classe chamada *Paths*, e através dela utilizamos a *Files*. Uma das vantagens do Path é que por ser uma interface será baseada no Sistema Operacional.
+
+Para criar e pegar um Path, podemos fazer de forma bem parecida com o File:
+
+```Java
+public class PathTest01 {
+    public static void main(String[] args) {
+        Path p1 = Paths.get("/home/adrian/IdeaProjects/Praticando-Java/file.txt");
+        System.out.println(p1.getFileName());
+    }
+}
+
+// Saída: file.txt
+```
+
+Também temos outras formas:
+
+```Java
+public class PathTest01 {
+    public static void main(String[] args) {
+        Path p1 = Paths.get("/home/adrian/IdeaProjects/Praticando-Java/file.txt");
+        Path p2 = Paths.get("/home/adrian/IdeaProjects/Praticando-Java", "file.txt");
+        Path p3 = Paths.get("/home", "adrian/IdeaProjects/Praticando-Java", "file.txt");
+        Path p4 = Paths.get("/home", "adrian", "IdeaProjects", "Praticando-Java", "file.txt");
+        System.out.println(p1.getFileName());
+        System.out.println(p2.getFileName());
+        System.out.println(p3.getFileName());
+        System.out.println(p4.getFileName());
+    }
+}
+
+// Saída: file.txt
+//        file.txt
+//        file.txt
+//        file.txt
+```
+
+É possível também converter para File com o `.toFile()` e para Path com o `toPath()`.
+
+---
+
