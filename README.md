@@ -3404,3 +3404,91 @@ As datas de modificação sim podem ser alteradas para até antes mesmo da cria�
 
 ---
 
+# 150 - Classes Utilitárias - NIO pt 07 - BasicFileAttributes pt 02
+
+Para ler atributos básicos usamos o `readAttributes(path, class)`
+
+```Java
+public class BasicFileAttributesTest02 {
+    public static void main(String[] args) throws IOException {
+        Path path = Paths.get("pasta/subpasta");
+        BasicFileAttributes basicFileAttributes = Files.readAttributes(path, BasicFileAttributes.class);
+```
+
+Quando *Files* executa *readAttributes* o objeto retornado um objeto que passa pelo teste e é o BasicFileAttributes. Para nós, não importa o que retornará, pois iremos faze orientada a Interface, porque o BasicFileAttributes é uma Interface e iremos executar os métodos da Interface, o objeto o Java quem irá tomar conta.
+
+Alguns atributos do basicFilecAttributes:
+
+```Java
+public class BasicFileAttributesTest02 {
+    public static void main(String[] args) throws IOException {
+        Path path = Paths.get("pasta/subpasta");
+        BasicFileAttributes basicFileAttributes = Files.readAttributes(path, BasicFileAttributes.class);
+        
+        FileTime creationTime = basicFileAttributes.creationTime();
+        FileTime lastModifiedTime = basicFileAttributes.lastModifiedTime();
+        FileTime lastAccessTime = basicFileAttributes.lastAccessTime();
+          
+        System.out.println("Creation: " + creationTime);
+        System.out.println("lastModified: " + lastModifiedTime);
+        System.out.println("lastAccess: " + lastAccessTime);
+    }
+}
+```
+
+Normalmente classes que nos permitem que alteremos alguma coisa tem sua terminação com "View", por exemplo `getFileAttributeView`.
+
+Para criar:
+
+```Java
+Files.getFileAttributeView(path, BasicFileAttributeView.class);
+```
+
+Ele possui um atributo que altera o `lastModifiedTime`, `lastAccessTime` e o `creationTime`. É bom se atentar pois ele pede `FileTime` 
+
+```Java
+        BasicFileAttributeView fileAttributeView = Files.getFileAttributeView(path, BasicFileAttributeView.class);
+        FileTime newCreationTime = FileTime.fromMillis(System.currentTimeMillis());
+        fileAttributeView.setTimes(lastModifiedTime, newCreationTime,creationTime);
+    }  
+}
+```
+
+Desta forma alteramos somente o tempo de criação para o tempo atual. O *FileTime*  possui um método para pegar o tempo atual.
+
+Código:
+
+```Java
+public class BasicFileAttributesTest02 {
+    public static void main(String[] args) throws IOException {
+        Path path = Paths.get("pasta/subpasta");
+        BasicFileAttributes basicFileAttributes = Files.readAttributes(path, BasicFileAttributes.class);
+        
+        FileTime creationTime = basicFileAttributes.creationTime();
+        FileTime lastModifiedTime = basicFileAttributes.lastModifiedTime();
+        FileTime lastAccessTime = basicFileAttributes.lastAccessTime();
+        
+        System.out.println("Creation: " + creationTime);
+        System.out.println("lastModified: " + lastModifiedTime);
+        System.out.println("lastAccess: " + lastAccessTime);
+        
+        System.out.println("----------------------------------");
+        
+        BasicFileAttributeView fileAttributeView = Files.getFileAttributeView(path, BasicFileAttributeView.class);
+        FileTime newCreationTime = FileTime.fromMillis(System.currentTimeMillis());
+        fileAttributeView.setTimes(lastModifiedTime, newCreationTime,creationTime);
+        
+        creationTime = fileAttributeView.readAttributes().creationTime();
+        lastModifiedTime = fileAttributeView.readAttributes().lastModifiedTime();
+        lastAccessTime = fileAttributeView.readAttributes().lastAccessTime();
+        
+        System.out.println("Creation: " + creationTime);
+        System.out.println("lastModified: " + lastModifiedTime);
+        System.out.println("lastAccess: " + lastAccessTime);
+    }
+}
+```
+
+Como o `foleAttributesView` possui um método de leitura utilizamos ele para pegar o valor atualizado.
+
+---
