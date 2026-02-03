@@ -3360,3 +3360,47 @@ public class RelativizeTest01 {
 //        4- artists.txt
 //        Exception in thread "main" java.lang.IllegalArgumentException: 'other' is different type of Path
 ```
+
+---
+
+# 149 - Classes Utilitárias - NIO pt 06 - BasicFileAttributes pt 01
+
+A *BasicFileAttributes* foi introduzida para utilizar o polimorfismo baseado no sistema operacional. A *BasicFileAttribute* é usada no geral, a *DosFileAttributes* mais voltada a Windows e PosixFileAttributes para sistemas Unix.
+
+As duas maneiras de editar as datas de última vez modificado:
+
+Com File:
+
+```Java
+public class BasicFileAttributeTest01 {
+    public static void main(String[] args) throws IOException {
+        LocalDateTime date = LocalDateTime.now().minusDays(30);
+        File file = new File("pasta/subpasta/test.txt");
+        boolean isCreated = file.createNewFile();
+        boolean isModified = file.setLastModified(date.toInstant(ZoneOffset.UTC).toEpochMilli());
+    }
+}
+```
+
+Com o Path:
+
+```Java
+public class BasicFileAttributeTest01 {
+    public static void main(String[] args) throws IOException {
+        Path path = Paths.get("pasta/subpasta/test_Path.txt");
+        Files.createFile(path);
+        FileTime fileTime = FileTime.from(date.toInstant(ZoneOffset.UTC));
+        Files.setLastModifiedTime(path, fileTime);
+        
+        // Também podemos checar permissões
+        System.out.println(Files.isWritable(path));
+		System.out.println(Files.isReadable(path));
+		System.out.println(Files.isExecutable(path));
+    }
+}
+```
+
+As datas de modificação sim podem ser alteradas para até antes mesmo da criação do arquivo.
+
+---
+
