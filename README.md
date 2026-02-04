@@ -3586,4 +3586,30 @@ Em cada nível suas permissões são representadas por 3 caracteres (deve ser es
 
 Então neste caso "rwxrw-r--", estamos falando que o **dono** tem permissão de leitura, alteração e execução, o **Usuário** tem permissão de leitura e alteração e os Outros tem permissão somente te leitura.
 
+**FONTE**: https://guialinux.uniriotec.br/permissao-de-acesso/
+
 ---
+
+# 153 - Classes Utilitárias - NIO pt 10 - DirectoryStream
+
+DirectoryStream é uma forma de pegar todos os diretórios de uma pasta. Para criar um DirectoryStream será necessário passar uma classe sobre o que será este DirectoryStream, no caso Path, e para criar utilizaremos logo em seguida o `Files.newDirectoryStream(Path)`. Então podemos iterar sobre ele para ver os nomes dos diretórios com `.getFileName()`.
+
+Geralmente quando se trabalha com IO e Stream, é necessário fechar, então usaremos o *Try With Resources*, porque o Java quem se encarrega de fechar
+
+```Java
+public class DirectoryTest01 {
+    public static void main(String[] args) {
+        Path dir = Paths.get("src/praticandoJava/aula");
+        
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
+            for (Path path : stream) {
+                System.out.println(path.getFileName());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+Generics: O Java decide em tempo de compilação o tipo da classe que precisa ser criada 
