@@ -3192,7 +3192,7 @@ public class PathTest02 {
 }
 ```
 
-Para copiar arquivos
+Para copiar arquivos:
 
 ```Java
 public class PathTest02 {
@@ -3406,7 +3406,7 @@ As datas de modificação sim podem ser alteradas para até antes mesmo da cria�
 
 # 150 - Classes Utilitárias - NIO pt 07 - BasicFileAttributes pt 02
 
-Para ler atributos básicos usamos o `readAttributes(path, class)`
+Para ler atributos básicos usamos o `readAttributes(path, class)`:
 
 ```Java
 public class BasicFileAttributesTest02 {
@@ -3444,7 +3444,7 @@ Para criar:
 Files.getFileAttributeView(path, BasicFileAttributeView.class);
 ```
 
-Ele possui um atributo que altera o `lastModifiedTime`, `lastAccessTime` e o `creationTime`. É bom se atentar pois ele pede `FileTime` 
+Ele possui um atributo que altera o `lastModifiedTime`, `lastAccessTime` e o `creationTime`. É bom se atentar pois ele pede `FileTime` .
 
 ```Java
         BasicFileAttributeView fileAttributeView = Files.getFileAttributeView(path, BasicFileAttributeView.class);
@@ -3509,7 +3509,7 @@ public class DosFileAttributeTest01 {
 }
 ```
 
-Podemos ler e alterar com o `readAttributes(path, class)` e `getFileAttributeView(path, class)`
+Podemos ler e alterar com o `readAttributes(path, class)` e `getFileAttributeView(path, class)`.
 
 
 ```Java
@@ -3594,7 +3594,7 @@ Então neste caso "rwxrw-r--", estamos falando que o **dono** tem permissão de 
 
 DirectoryStream é uma forma de pegar todos os diretórios de uma pasta. Para criar um DirectoryStream será necessário passar uma classe sobre o que será este DirectoryStream, no caso Path, e para criar utilizaremos logo em seguida o `Files.newDirectoryStream(Path)`. Então podemos iterar sobre ele para ver os nomes dos diretórios com `.getFileName()`.
 
-Geralmente quando se trabalha com IO e Stream, é necessário fechar, então usaremos o *Try With Resources*, porque o Java quem se encarrega de fechar
+Geralmente quando se trabalha com IO e Stream, é necessário fechar, então usaremos o *Try With Resources*, porque o Java quem se encarrega de fechar.
 
 ```Java
 public class DirectoryTest01 {
@@ -3612,4 +3612,61 @@ public class DirectoryTest01 {
 }
 ```
 
-Generics: O Java decide em tempo de compilação o tipo da classe que precisa ser criada 
+Generics<>: O Java decide em tempo de compilação o tipo da classe que precisa ser criada.
+
+---
+
+# 154 - Classes Utilitárias - NIO pt 11 - SimpleFileVisitor pt 01
+
+O DirectoryStream retorna somente as pastas no diretório solicitado, com o SimpleFileVisitor, podemos fazer com que retorne as pastas dentro dos diretórios solicitados.
+
+Com o *Files* temos o método `.walkFileTree(Path inicial, comportamento)`, este segundo parâmetro é necessário que seja um FileVisitor, para isso iremos criar uma outra classe que estenda de SimpleFileVisitor com a função que desejamos e para o retorno temos algumas opções de quando ele encontra algum diretório que tenha outras pastas:
+
+- CONTINUE: vai continuar;
+- TERMINATE: Temina;
+- SKIP_SUBTREE: Pula as subpastas;
+- SKIP_SIBLINGS: Pula quem está no mesmo nível
+  
+  Código:
+
+```Java
+class ListAllFiles extends SimpleFileVisitor<Path> {
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+        System.out.println(file.getFileName());
+        return FileVisitResult.CONTINUE;
+    }
+}
+  
+public class SimpleFileVisitorTest01 {
+    public static void main(String[] args) throws IOException {
+        Path root = Paths.get("src/praticandoJava/aula");
+        Files.walkFileTree(root, new ListAllFiles());
+        
+    }
+}
+```
+
+Para filtrar podemos usar o `endswith()` no *ListAllFiles*:
+
+```Java
+class ListAllFiles extends SimpleFileVisitor<Path> {
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+        if (file.getFileName().toString().endsWith(".java")) {
+            System.out.println(file.getFileName());
+        }
+        return FileVisitResult.CONTINUE;
+    }
+}
+  
+public class SimpleFileVisitorTest01 {
+    public static void main(String[] args) throws IOException {
+        Path end = Paths.get(".java");
+        Path root = Paths.get("src/praticandoJava/aula/");
+        Files.walkFileTree(root, new ListAllFiles());
+    }
+}
+```
+
+---
