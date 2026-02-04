@@ -3495,10 +3495,10 @@ Como o `foleAttributesView` possui um método de leitura utilizamos ele para peg
 
 # 151 - Classes Utilitárias - NIO pt 08 - DosFileAttribute
 
-Para definir um arquivo como oculto e somente leitura usamos o `Files.setAttribute(path, attribute, boolean)` (Para arquivos no Windows deve-se utilizar "dos:" antes. Ex: "dos:hidden"). 
+Para definir um arquivo como oculto e somente leitura usamos o `Files.setAttribute(path, attribute, boolean)` (Vale lembrar que DOS é para Windows). 
 
 ```Java
-public class DosFileattributeTest01 {
+public class DosFileAttributeTest01 {
     public static void main(String[] args) throws IOException {
         Path path = Paths.get("pasta/subpasta/text.txt");
         if (Files.notExists(path)) Files.createFile(path);
@@ -3509,13 +3509,11 @@ public class DosFileattributeTest01 {
 }
 ```
 
-Dessa forma deveria funcionar, imagino que apenas para Windows, uma vez que nenhuma das formas apresentadas deu certo para mim.
-
 Podemos ler e alterar com o `readAttributes(path, class)` e `getFileAttributeView(path, class)`
 
 
 ```Java
-public class DosFileattributeTest01 {
+public class DosFileAttributeTest01 {
     public static void main(String[] args) throws IOException {
         Path path = Paths.get("pasta/subpasta/text.txt");
         if (Files.notExists(path)) Files.createFile(path);
@@ -3534,6 +3532,58 @@ public class DosFileattributeTest01 {
 }
 ```
 
-Dessa forma também deveria funcionar, o que não é o meu caso (Uso Ubuntu, imagino que este seja o problema).
+---
+
+# 152 - Classes Utilitárias - NIO pt 09 - PosixFileAttributes
+
+Para ler as permissões de uma pasta no Linux utilizamos a classe `PosixFileattribute`: 
+
+```Java
+public class PosixFileAttributesTest01 {
+    public static void main(String[] args) throws IOException {
+        Path path = Paths.get("pasta/subpasta/linuxTest.txt");
+        if (Files.notExists(path)) Files.createFile(path);
+	    
+        PosixFileAttributes posixFileAttributes = Files.readAttributes(path, PosixFileAttributes.class);
+        System.out.println(posixFileAttributes.permissions());
+    }
+}
+```
+
+Para alterar as permissões usamos o `Files.getFileAttributeView` com a classe `PosixFileAttributeView`. Vamos escrever as permissões por meio de uma String então para isto usaremos uma `PosixFilePermissions.fromString(perms)` e finalmente definir com `.setPermissions(posixFilePermissions)`.
+
+```Java
+public class PosixFileAttributesTest01 {
+    public static void main(String[] args) throws IOException {
+        Path path = Paths.get("pasta/subpasta/linuxTest.txt");
+        if (Files.notExists(path)) Files.createFile(path);
+        
+        // Verificar anterior
+        PosixFileAttributes posixFileAttributes = Files.readAttributes(path, PosixFileAttributes.class);
+        System.out.println(posixFileAttributes.permissions());
+          
+        // Definir  
+        PosixFileAttributeView fileAttributeView = Files.getFileAttributeView(path, PosixFileAttributeView.class);
+        Set<PosixFilePermission> posixFilePermissions = PosixFilePermissions.fromString("rwxrw-r--");
+        fileAttributeView.setPermissions(posixFilePermissions);
+        System.out.println(fileAttributeView.readAttributes().permissions());
+        
+    }
+}
+```
+
+Explicação sobre as permissões de arquivos do Linux: Neste caso temos três níveis de permissões sendo elas em ordem:
+
+1. Dono (Owner);
+2. Usuário (Group);
+3. Outros (Others).
+
+Em cada nível suas permissões são representadas por 3 caracteres (deve ser escritas em ordem):
+
+1. r: permite ler o conteúdo de um arquivo/diretório.
+2. w: permite alterar um arquivo/diretório.
+3. x: permite executar um arquivo ou acessar um diretório e executar comandos.
+
+Então neste caso "rwxrw-r--", estamos falando que o **dono** tem permissão de leitura, alteração e execução, o **Usuário** tem permissão de leitura e alteração e os Outros tem permissão somente te leitura.
 
 ---
