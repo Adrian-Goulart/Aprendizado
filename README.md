@@ -3492,3 +3492,48 @@ public class BasicFileAttributesTest02 {
 Como o `foleAttributesView` possui um método de leitura utilizamos ele para pegar o valor atualizado.
 
 ---
+
+# 151 - Classes Utilitárias - NIO pt 08 - DosFileAttribute
+
+Para definir um arquivo como oculto e somente leitura usamos o `Files.setAttribute(path, attribute, boolean)` (Para arquivos no Windows deve-se utilizar "dos:" antes. Ex: "dos:hidden"). 
+
+```Java
+public class DosFileattributeTest01 {
+    public static void main(String[] args) throws IOException {
+        Path path = Paths.get("pasta/subpasta/text.txt");
+        if (Files.notExists(path)) Files.createFile(path);
+        
+        Files.setAttribute(path, "dos:hidden", true);
+        Files.setAttribute(path, "dos:readonly", true);
+    }
+}
+```
+
+Dessa forma deveria funcionar, imagino que apenas para Windows, uma vez que nenhuma das formas apresentadas deu certo para mim.
+
+Podemos ler e alterar com o `readAttributes(path, class)` e `getFileAttributeView(path, class)`
+
+
+```Java
+public class DosFileattributeTest01 {
+    public static void main(String[] args) throws IOException {
+        Path path = Paths.get("pasta/subpasta/text.txt");
+        if (Files.notExists(path)) Files.createFile(path);
+        
+        DosFileAttributes dosFileAttributes = Files.readAttributes(path, DosFileAttributes.class);
+        System.out.println(dosFileAttributes.isHidden());
+        System.out.println(dosFileAttributes.isReadOnly());
+        
+        DosFileAttributeView fileAttributeView = Files.getFileAttributeView(path, DosFileAttributeView.class);
+        fileAttributeView.setHidden(true);
+        fileAttributeView.setReadOnly(true);
+        
+        System.out.println(fileAttributeView.readAttributes().isHidden());
+		System.out.println(fileAttributeView.readAttributes().isReadOnly());
+    }
+}
+```
+
+Dessa forma também deveria funcionar, o que não é o meu caso (Uso Ubuntu, imagino que este seja o problema).
+
+---
