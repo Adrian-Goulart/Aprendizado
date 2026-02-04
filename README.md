@@ -3670,3 +3670,37 @@ public class SimpleFileVisitorTest01 {
 ```
 
 ---
+
+# 155 - Classes Utilitárias - NIO pt 12 - SimpleFileVisitor pt 02
+
+Alguns métodos do SimpleFileVisitor:
+
+- `preVisitDirectory`: Executa antes de entrar na pasta, mas não é um comportamento garantido:
+
+```Java
+class ListAllFiles extends SimpleFileVisitor<Path> {
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+         System.out.println(file.getFileName());
+        return FileVisitResult.CONTINUE;
+    }
+    
+    // Pre visit
+    @Override
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+        System.out.println("Pre visit: "+dir.getFileName());
+        return FileVisitResult.CONTINUE;
+    }
+    
+public class SimpleFileVisitorTest02 {
+    public static void main(String[] args) throws IOException {
+        Path root = Paths.get("pasta");
+        Files.walkFileTree(root, new ListAllFiles());
+        
+    }
+}
+```
+
+- `visitFileFailed`: Quando ao tentar entrar em um arquivo mas não consegue, pode ser usado para quando tentar entrar em diretório e lançar um log caso não consiga.
+- `postVisitDirectory`: O contrário do *preVisit*, executa toda vez que sai de um diretório
+---
