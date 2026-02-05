@@ -3703,4 +3703,51 @@ public class SimpleFileVisitorTest02 {
 
 - `visitFileFailed`: Quando ao tentar entrar em um arquivo mas não consegue, pode ser usado para quando tentar entrar em diretório e lançar um log caso não consiga.
 - `postVisitDirectory`: O contrário do *preVisit*, executa toda vez que sai de um diretório
+
 ---
+
+# 156 - Classes Utilitárias - NIO pt 13 - PathMatcher pt 01
+
+A PathMacther facilita a busca de Paths como uma forma de filtragem parecida com Expressões Regulares, mas de forma mais simplificada.
+
+Criaremos então um método `matches` para facilitar o processo, em que receberá um Path e uma String (glob). Dentro do método usaremos a classe `PathMatcher` e para pegar um objeto dela usamos `FileSystems.getDefault().getPathMatcher(glob)`. Ficando desta forma:
+
+```Java
+public static void matches(Path path, String glob) {
+    PathMatcher matcher = FileSystems.getDefault().getPathMatcher(glob);
+    System.out.println(glob + ": " + matcher.matches(path));
+}
+```
+
+Para testar faremos alguns Paths e utilizaremos o `matches` com a String (glob) desta exata forma ("glob:"):
+
+```Java
+public class PathMatcherTest01 {
+    public static void main(String[] args) {
+        Path path1 = Paths.get("pasta/subpasta/text.txt");
+        Path path2 = Paths.get("pasta/subpasta/text.md");
+        Path path3 = Paths.get("pasta/subpasta/text.bkp");
+        
+		matches(path1, "glob:*.txt");
+		matches(path1, "glob:**/*.txt"); // Considera Diretórios
+		
+		matches(path2, "glob:**/*.txt"); // false
+		matches(path2, "glob:**/*.{txt,md,bkp}"); // OU
+		
+		matches(path2, "glob:**/*.???");
+		matches(path3, "glob:**/*.???");
+        
+    }  
+    public static void matches(Path path, String glob) {
+        PathMatcher matcher = FileSystems.getDefault().getPathMatcher(glob);
+        System.out.println(glob + ": " + matcher.matches(path));
+    }
+}
+```
+
+ O '\*' procura pelo aquivo terminado em '.txt', com dois '\*' ou '\*\*/\*'  considera se diretórios.
+
+O '?' procura o que tiver a mesma quantidade de letras equivalente a tanto de '?' que possui onde posicionado.
+
+---
+
