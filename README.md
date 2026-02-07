@@ -2595,12 +2595,12 @@ Os quantificadores são determinadas letras que irão pegar determinada express�
 
 Quantificadores:
 
-> // ? zero ou uma  
-> // * Zero ou mais  
-> // + uma ou mais  
-> // {x, y} de x até y  
-> // () Agrupamento  
-> // | OU  
+> // ? zero ou uma
+> // * Zero ou mais
+> // + uma ou mais
+> // {x, y} de x até y
+> // () Agrupamento
+> // | OU
 > // $ "Fim de linha"
 
 Por exemplo, para pegarmos valores hexagonais **válidos** em um texto podemos fazer:
@@ -3751,3 +3751,29 @@ O '?' procura o que tiver a mesma quantidade de letras equivalente a tanto de '?
 
 ---
 
+# 157 - Classes Utilitárias - NIO pt 14 - PathMatcher pt 02
+
+Exercício sobre filtrar todos os arquivos com o Matcher e SimpleFileVisitor:
+
+```Java
+class ListFiles extends SimpleFileVisitor<Path> {
+    PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:**/*{Test*}.{java,class}");
+    
+    @Override  
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+        if (matcher.matches(file)) {
+            System.out.println(file.getFileName());
+        }
+        return FileVisitResult.CONTINUE;
+    }
+}
+
+public class PathMatcherTest02 {
+    public static void main(String[] args) throws IOException {
+        Path path = Paths.get(".");
+        Files.walkFileTree(path, new ListFiles());
+    }
+}
+```
+
+---
