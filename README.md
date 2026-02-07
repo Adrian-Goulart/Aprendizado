@@ -3926,7 +3926,7 @@ public class SerializacaoTest01 {
     }
 }
 ```
-
+s
 Com isso serializamos o objetos, agora para deserializar é o processo contrário, o Input
 
 ```Java
@@ -3954,3 +3954,141 @@ O Objeto é o que está salvo em memória
 ***IMPORTANTE***: Quando se lê um objeto serializado o java **NÃO** utiliza o construtor
 
 ---
+
+# 160 - Classes Utilitárias - Serialization pt 02
+
+Quando se deseja que um atributo não seja serializado, utiliza-se o *transient*:
+
+```Java
+public class Student implements Serializable {
+    private int id;
+    private String name;
+    private transient String password;
+	
+	// ...
+}
+```
+
+
+Algo para se tomar cuidado são os atributos estáticos, não pertencem ao objeto e sim a classe, portanto não são serializados, constantes também não.
+
+Quando se associa uma classe a outra e deseja serializar, basta implementar *serializable* em ambas, mas em casos em que não se tem acesso ao objeto, deve-se dar instruções ao Java para fazer com que seja serializado.
+
+Primeiro devemos adicionar `transient` ao objeto que desejamos serializar, para não acontecer uma exceção. Agora vamos escrever 2 métodos, como o Java vai serializar o objeto e como ele vai ler este objeto.
+
+Separadas:
+
+```Java
+
+// ...
+
+@Serial
+private void writeObject(ObjectOutputStream oos) {
+    try {
+        // Primeiro, forma padão
+        oos.defaultWriteObject();
+        // O que não faz parte, pegar atributos
+        oos.writeUTF(studentClass.getName());
+        
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+@Serial
+private void readObject(ObjectInputStream ois) {
+    try {
+        ois.defaultReadObject();
+        String className = ois.readUTF();
+        studentClass = new StudentClass(className);
+        
+    } catch (IOException | ClassNotFoundException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+Junta do resto do código:
+
+```Java
+public class Student implements Serializable {
+    private int id;
+    private String name;
+    private transient String password;
+    transient StudentClass studentClass;
+    
+    public Student(int id, String name, String password) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+    }
+    
+    @Override
+    public String toString() {
+        return "Aluno{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", student class='" + studentClass + '\'' +
+                '}';
+    }
+    
+    @Serial
+    private void writeObject(ObjectOutputStream oos) {
+        try {
+            // Primeiro, forma padão
+            oos.defaultWriteObject();
+            // O que não faz parte, pegar atributos
+            oos.writeUTF(studentClass.getName());
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Serial
+    private void readObject(ObjectInputStream ois) {
+        try {
+            ois.defaultReadObject();
+            String className = ois.readUTF();
+            studentClass = new StudentClass(className);
+            
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    public StudentClass getStudentClass() {
+        return studentClass;
+    }
+    
+    public void setStudentClass(StudentClass studentClass) {
+        this.studentClass = studentClass;
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
+    }
+}
+```
+
