@@ -3770,10 +3770,81 @@ class ListFiles extends SimpleFileVisitor<Path> {
 
 public class PathMatcherTest02 {
     public static void main(String[] args) throws IOException {
-        Path path = Paths.get(".");
+        Path path = Paths.get(".");  
         Files.walkFileTree(path, new ListFiles());
-    }
+    }  
 }
 ```
 
 ---
+
+# 158 - Classes Utilitárias - NIO pt 15 - ZipOutputStream
+
+Com o ZipOutputStream podemos transformar arquivos em zip. Para isto criaremos um método no qual recebe 2 parâmetros, o primeiro é o local em que vamos guardar os arquivos e o segundo são os arquivos que vamos zipar.
+
+```Java
+public class ZipOutputStreamTest01 {
+    public static void main(String[] args) {
+        Path arquivoZip = Paths.get("pasta/arquivo.zip");
+        Path arquivosParaZipar = Paths.get("pasta/subpasta1");
+    }
+    
+    private static void zip (Path arquivoZip, Path arquivosParaZipar){
+		  
+    }  
+}
+```
+
+O ZipOutputStream implementa Closeable, logo utilizamos o *Try With Resources*. Ele não necessariamente precisa de um arquivo Zip, mas sim de um OutputStream, para criar um arquivo OutputStream usa-se o `Files.newOutputStream(path)`. 
+
+Para os arquivos, primeiro precisamos localiza-los, então podemos utilizar o *SimpleFileVisitor* ou o *DirectoryStream*.
+
+```Java
+public class ZipOutputStreamTest01 {
+    ￼public static void main(String[] args) {
+        Path arquivoZip = Paths.get("pasta/arquivo.zip");
+        Path arquivosParaZipar = Paths.get("pasta/subpasta1");
+    }
+    
+    private static void zip (Path arquivoZip, Path arquivosParaZipar){
+		try (ZipOutputStream zipStream = new ZipOutputStream(Files.newOutputStream(arquivoZip));  
+	DirectoryStream<Path> directoryStream = Files.newDirectoryStream(arquivosParaZipar)) {
+		
+		} catch (IOException e) {
+	    e.printStackTrace();
+		}
+	}	
+}
+```
+
+O processo para zipar acontece em etapas, criar entrada, colocar entrada no zip e copiar:
+
+```Java
+public class ZipOutputStreamTest01 {
+    public static void main(String[] args) {
+        Path arquivoZip = Paths.get("pasta/arquivo.zip");
+        Path arquivosParaZipar = Paths.get("pasta/subpasta1/subsubpasta1");
+        zip(arquivoZip, arquivosParaZipar);
+    }
+      
+    private static void zip (Path arquivoZip, Path arquivosParaZipar){
+        try (ZipOutputStream zipStream = new ZipOutputStream(Files.newOutputStream(arquivoZip));
+             DirectoryStream<Path> directoryStream = Files.newDirectoryStream(arquivosParaZipar)) {
+            for (Path file : directoryStream) {
+                // Entrada
+                ZipEntry zipEntry = new ZipEntry(file.getFileName().toString());
+                // Colocar entrada
+                zipStream.putNextEntry(zipEntry);
+                // Copiar o arquivo
+                Files.copy(file, zipStream);
+                // Fechar entrada
+                zipStream.closeEntry();
+                System.out.println(file.getFileName());
+            }
+            System.out.println("Arquivo criado!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
