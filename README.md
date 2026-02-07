@@ -3848,3 +3848,109 @@ public class ZipOutputStreamTest01 {
     }
 }
 ```
+
+---
+
+# 159 - Classes Utilitárias - Serialization pt 01
+
+A Serialização é pegar um objeto em memória e persistir ele em algum local.
+
+Para serializar precisamos usar com uma classe do pacote 'IO' e 'NIO'. Quando se serializa, transforma-se o objeto em um array de partes (baixo nível, ou seja, Stream, InputStream é quando se lê, já o Output Stream é quando se escreve).
+
+Output provavelmente pede recurso do Sistema Operacional, logo usamos o *Try With Resources*.
+
+Objeto (Precisa implementar Serializable):
+
+```Java
+public class Student implements Serializable {
+    private int id;
+    private String name;
+    private String password;
+    
+    public Student(int id, String name, String password) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+    }
+    
+    @Override
+    public String toString() {
+        return "Aluno{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                '}';  
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
+    }
+}
+```
+
+Serializer:
+
+```Java
+public class SerializacaoTest01 {
+    public static void main(String[] args) {
+        Student student = new Student(01, "Adrian", "senha-Secreta");
+        serializer(student);
+    }
+    
+    private static void serializer(Student student) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Student.ser"))) {
+            oos.writeObject(student);
+        } catch (IOException e ) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+Com isso serializamos o objetos, agora para deserializar é o processo contrário, o Input
+
+```Java
+public class SerializacaoTest01 {
+    public static void main(String[] args) {
+        Student student = new Student(01, "Adrian", "senha-Secreta");
+        deserializer();
+    }
+    
+    private static void deserializer() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Student.ser"))) {
+            Student student = (Student) ois.readObject();
+            System.out.println(student);
+        } catch (IOException | ClassNotFoundException e) {  
+            e.printStackTrace();
+        }
+    }
+}
+
+// Saída: Aluno{id=1, name='Adrian', password='senha-Secreta'}
+```
+
+O Objeto é o que está salvo em memória
+
+***IMPORTANTE***: Quando se lê um objeto serializado o java **NÃO** utiliza o construtor
+
+---
