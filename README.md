@@ -4098,5 +4098,110 @@ public class Student implements Serializable {
 
 O `equals` quando trabalhado com String compara os valores, diferentemente de quando comparamos com `==`, que compara referência, mas com Objetos é diferente. Quando usamos o `equals` em objetos é comparada a referência entre eles e não valores, então dois objetos de valores iguais sendo comparado com o `equals`  retornará `false`.
 
+Exemplo:
+
+```Java
+public class EqualsTest01 {
+    public static void main(String[] args) {
+        Smartphone s1 = new Smartphone("2578", "Samsung");
+        Smartphone s2 = new Smartphone("2578", "Samsung");
+        System.out.println(s1.equals(s2));
+    }  
+}
+
+// Saída: false
+```
+
 ---
 
+# 161 - Coleções pt 01 - equals pt 02
+
+Toda classe é um objeto, logo podemos sobrescrever o `equals`.
+Para a sobrescrita do `equals` é necessário atender algumas regras, sendo elas:
+
+> Reflexivo: x.equals(x) tem que ser true para tudo que for diferente de null
+> Simétrico: para x e y diferentes de null, se x.equals(y) == true logo, y.equal(x) -- true
+> Transitividade: para x,y,z diferentes de null, se x.equals(y) == true, e x.equals(z) == true logo, y.equals(z == true)
+> Consistente: x.equals(x) sempre retorna true se x for diferente de null
+> para x diferente de null, x.equals(null) tem que retornar false.
+
+Vale lembrar que como o `equals` é uma sobrescrita do Objeto, é possível utilizar o `this` que seria como o 'x' citado acima e o 'y' seria o objeto passado pelo parâmetro.
+
+Exemplo:
+
+```Java
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (this == obj ) return true;
+        if (this.getClass() != obj.getClass()) return false;
+        Smartphone smartphone = (Smartphone) obj;
+        return serialNumber != null && serialNumber.equals(smartphone.serialNumber);
+    }
+```
+
+Código completo:
+
+```Java
+public class Smartphone {
+    private String serialNumber;
+    private String brand;
+      
+    public Smartphone(String serialNumber, String brand) {
+        this.serialNumber = serialNumber;
+        this.brand = brand;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (this == obj ) return true;
+        if (this.getClass() != obj.getClass()) return false;
+        Smartphone smartphone = (Smartphone) obj;
+        return serialNumber != null && serialNumber.equals(smartphone.serialNumber);
+    }
+    
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+    
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+    
+    public String getBrand() {
+        return brand;
+    }
+    
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+}
+```
+
+Código teste:
+
+```Java
+public class EqualsTest01 {
+    public static void main(String[] args) {
+        Smartphone s1 = new Smartphone("2578", "Samsung");
+        Smartphone s2 = new Smartphone("2578", "Samsung");
+        System.out.println(s1.equals(s2));
+    }
+}
+
+// Saída: true
+```
+
+Deve-se tomar cuidado porque apenas comparamos o número de série, logo se mudarmos a marca, ainda continuará a retornar `true`, então também será necessário comparar a marca.
+
+```Java
+@Override
+public boolean equals(Object obj) {
+    if (obj == null) return false;
+    if (this == obj ) return true;
+    if (this.getClass() != obj.getClass()) return false;
+    Smartphone smartphone = (Smartphone) obj;
+    return (serialNumber != null && serialNumber.equals(smartphone.serialNumber)) && (brand != null && brand.equals(smartphone.brand));
+}
+```
