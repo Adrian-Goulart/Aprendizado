@@ -1136,7 +1136,7 @@ public class StringTest {
 }
 ```
 
-Quando criamos uma variável de mesmo nome a String não será duplicada e sim reutilizada, ou seja, irá ser feita duas referência a mesma String, isto é o que chamamos de ***String Interning.***
+Quando criamos uma variável de mesmo nome a String não será duplicada e sim reutilizada, ou seja, irá ser feita duas referências a mesma String, isto é o que chamamos de ***String Interning.***
 
 ```Java
 public class StringTest {
@@ -4091,4 +4091,12 @@ public class Student implements Serializable {
     }
 }
 ```
+
+---
+
+# 161 - Coleções pt 01 - equals pt 01
+
+O `equals` quando trabalhado com String compara os valores, diferentemente de quando comparamos com `==`, que compara referência, mas com Objetos é diferente. Quando usamos o `equals` em objetos é comparada a referência entre eles e não valores, então dois objetos de valores iguais sendo comparado com o `equals`  retornará `false`.
+
+---
 
