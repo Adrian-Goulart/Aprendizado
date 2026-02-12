@@ -4216,3 +4216,13 @@ Em resumo o has gera um valor numérico para identificar o seu valor.
 
 ---
 
+# 164 - Coleções pt 04 - hashCode pt 02
+
+O hashCode foi definido na classe *Object*, ele é *native*, ou seja, foi escrito em outra linguagem e implementado para Java. Para ele, também temos algumas regras para seguir:
+
+1. Se x.equals(y) == true, y.hashCode() == x.hashCode();
+2. y.hashCode() == x.hashCode() não necessariamente o equals de y.equals(x) tem que ser true;
+3. x.equals(y) == false;
+4. y.hashCode() != x.hashCode() x.equals(y) deverá ser false.
+
+É de extrema importância que o atributi que esteja gerando o hash, seja o mesmo do `equals`.
