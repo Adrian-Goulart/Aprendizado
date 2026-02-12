@@ -4205,3 +4205,14 @@ public boolean equals(Object obj) {
     return (serialNumber != null && serialNumber.equals(smartphone.serialNumber)) && (brand != null && brand.equals(smartphone.brand));
 }
 ```
+
+---
+
+# 163 - Coleções pt 03 - hashCode pt 01
+
+O hash é um número gerado, imaginemos que queremos percorrer um array gigante e que cada letra do alfabeto tem um número, sendo A-1 a Z-26, logo o nome *Alex* tem o hash igual a 42, pela soma dos números pertencentes as letras (1+12+5+24), agora o nome "***Ado***" tem o hash igual a 20. Para buscar o nome *Alex*, não sera necessário percorrer toda a lista para buscar o nome, com o hash, basta gerar o hash de *Alex* e buscar diretamente no número pertencente a ele, retornando o número 42. Porém se tivermos dois ou mais nomes de mesmo número, o Java usa o `equals`
+
+Em resumo o has gera um valor numérico para identificar o seu valor.
+
+---
+
