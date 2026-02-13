@@ -4226,3 +4226,21 @@ O hashCode foi definido na classe *Object*, ele é *native*, ou seja, foi escrit
 4. y.hashCode() != x.hashCode() x.equals(y) deverá ser false.
 
 É de extrema importância que o atributi que esteja gerando o hash, seja o mesmo do `equals`.
+
+---
+
+# 165 - Coleções pt 05 - Complexidade Big-O
+
+As coleções são um grupo de dados que podem se dividir em diferentes classes e se enquadram em duas categorias, ordenados (Ordered) e sortidos (Sorted).
+
+Falamos que algo é ordenado quando o Java "lembra" a ordem dos elementos de onde deveriam estar, um array por exemplo. Quando algo é sortido a interação da ordem geralmente é baseada em algo que predefinimos.
+
+Nas coleções cada uma apresenta propósitos específicos, são coesas enter si e quando usamos elas, usamos orientada a Interfaces. Baseado em suas implementações, influência na performance, o que é muito importante.
+
+A complexidade Big-O, define a velocidade baseada no tipo de operação sendo feita.
+
+Site usado na aula para exemplificar: https://www.bigocheatsheet.com/
+
+Do Java: https://www.cl.cam.ac.uk/teaching/1819/OOProg/complexity.pdf
+
+Não confundir *Collection* (Interface) com Coleções.
