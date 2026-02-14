@@ -4244,3 +4244,63 @@ Site usado na aula para exemplificar: https://www.bigocheatsheet.com/
 Do Java: https://www.cl.cam.ac.uk/teaching/1819/OOProg/complexity.pdf
 
 Não confundir *Collection* (Interface) com Coleções.
+
+---
+
+# 166 - Coleções pt 06 - List pt 01
+
+ Como o `List` é umas interface do pacote Collections, ou seja, coeso, então nele precisamos informar o tipo de objeto sendo um dos mais usados o `ArrayList`.
+
+```Java
+public class ListTest01 {
+    public static void main(String[] args) {
+        List names = new ArrayList();
+        names.add("Yorushika");
+        names.add("Zutomayo");
+        names.add("Ado");
+        names.add(18.2);
+        
+        for (Object name : names) {
+            System.out.println(name);
+        }
+    }
+}
+
+// Saída: Yorushika
+//        Zutomayo
+//        Ado
+//        18.2
+```
+
+Quando for iterar sobre ele será necessário utilizar o 'Object' pois o Java não sabe seu valor, mas isto é um problema, porque é possível colocar outros valores na lista, até a versão 1.4 do Java . Para resolver isto o Java com o generics força em tempo de compilação a definição do tipo.
+
+```Java
+public class ListTest01 {
+    public static void main(String[] args) {
+        List<String> names = new ArrayList<>();
+        names.add("Yorushika");
+        names.add("Zutomayo");
+        names.add("Ado");
+        
+        for (String name : names) {
+            System.out.println(name);
+        }
+        
+        System.out.println("---------------");
+        // Por meio do index
+        for (int i = 0; i < names.size(); i++) {
+            System.out.println(names.get(i));
+        }
+    }
+}
+
+// Saída: Yorushika
+//        Zutomayo
+//        Ado
+//        ---------------
+//        Yorushika
+//        Zutomayo
+//        Ado
+```
+
+Também podemos inserir o tamanho do `ArrayList` caso ultrapassado este tamanho ele será duplicado, tamanho padrão 16.
