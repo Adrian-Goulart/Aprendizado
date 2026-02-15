@@ -4304,3 +4304,78 @@ public class ListTest01 {
 ```
 
 Também podemos inserir o tamanho do `ArrayList` caso ultrapassado este tamanho ele será duplicado, tamanho padrão 16.
+
+---
+
+# 167 - Coleções pt 07 - List pt 02
+
+Quando tenta modificar o tamanho da lista dentro da estrutura `for` é lançado um erro, porque o `for` sabe o tamanho da lista, logo não é possível alterá-lo. A maneira mais correta de se fazer isto, embora não seja recomendado modificar tamanho durante a iteração, seria por meio da iteração com indexação:
+
+```Java
+// Por meio do index
+int size = names.size();
+for (int i = 0; i < size; i++) {
+    names.add("Yoasobi");
+    System.out.println(names.get(i));
+}
+System.out.println(names);
+
+// Saída: Yorushika
+//        Zutomayo
+//        Ado
+//        [Yorushika, Zutomayo, Ado, Yoasobi, Yoasobi, Yoasobi]
+```
+
+As coleções não aceitam tipos primitivos e sim os ***Wrappers***, isto ocorre, porque as coleções chamam o `equals` do hashCode eternamente, como os tipos primitivos não possuem um `equals` para o hashCode, o Java não permite.
+
+Um método do `ArrayList`  é o `remove()` que remove o item da lista baseado em seu index ou no objeto:
+
+```Java
+public static void main(String[] args) {
+    List<String> names = new ArrayList<>();
+    names.add("Yorushika");
+    names.add("Zutomayo");
+    names.add("Ado");
+    names.remove(0);
+    names.remove("Ado");
+	
+    for (String name : names) {
+    System.out.println(name);
+	}
+}
+
+// Saída: Zutomayo
+```
+
+Outro método é o `addAll()`, com ele, é possível juntar duas listas em uma:
+
+```Java
+public static void main(String[] args) {
+    List<String> names1 = new ArrayList<>();
+    List<String> names2 = new ArrayList<>();
+    names1.add("Yorushika");
+    names1.add("Zutomayo");
+    names1.add("Ado");
+    
+    names2.add("Kenshi Yonezu");
+    names2.add("Creepy Nuts");
+    names2.add("Natori");
+    names2.add("Eve");
+    
+    names1.addAll(names2);
+    
+    for (String name : names1) {
+         System.out.println(name);
+    }
+}
+
+// Saída: Yorushika
+//        Zutomayo
+//        Ado
+//        Kenshi Yonezu
+//        Creepy Nuts
+//        Natori
+//        Eve
+```
+
+---
