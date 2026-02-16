@@ -4438,3 +4438,98 @@ public class SmartphoneListTest01 {
 ```
 
 ---
+
+# 169 - Coleções pt 09 - Sorting lists pt 01
+
+Uma das formas de se ordenar uma lista é com o `Collections.sort(lista)` (Ordem lexicográfica).
+
+```Java
+public class ListSortTest01 {
+    public static void main(String[] args) {
+        List<String> mangas = new ArrayList<>();
+        mangas.add("Kimetsu no yaiba");
+        mangas.add("Sousou no Frieren");
+        mangas.add("Tongari Boushi no Atelier");
+        mangas.add("Yu Yu Hakusho");
+        mangas.add("Houseki no Kuni");
+        Collections.sort(mangas);
+        for (String manga : mangas) {
+            System.out.println(manga);
+        }
+    }
+}
+
+// Saída: Houseki no Kuni
+//        Kimetsu no yaiba
+//        Sousou no Frieren
+//        Tongari Boushi no Atelier
+//        Yu Yu Hakusho
+```
+
+Quando se trata de atributos que requerem algo da realidade, usa-se um identificador único.
+
+Para a próxima aula foi criada a classe manga, com ela o `hashCode` e  `equals` também foi gerada pela IDE (atalho CTRL + O), Utilizamos o `Objects,requireNonNull()` para dizer ao Java que tais valores não podem ser nulos.
+
+```Java
+public class Manga {
+    private Long id;
+    private String name;
+    private double priece;
+    
+    public Manga(Long id, String name, double priece) {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(name);
+        this.id = id;
+        this.name = name;
+        this.priece = priece;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Manga manga = (Manga) o;
+        return Double.compare(priece, manga.priece) == 0 && Objects.equals(id, manga.id) && Objects.equals(name, manga.name);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, priece);
+    }
+    
+    @Override
+    public String toString() {
+        return "Manga{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", priece=" + priece +
+                '}';
+    }
+    
+    public Long getId() {
+        return id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+      
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public double getPriece() {
+        return priece;
+    }
+    
+    public void setPriece(double priece) {
+        this.priece = priece;
+    }
+}
+```
+
+---
+
