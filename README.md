@@ -4225,7 +4225,7 @@ O hashCode foi definido na classe *Object*, ele é *native*, ou seja, foi escrit
 3. x.equals(y) == false;
 4. y.hashCode() != x.hashCode() x.equals(y) deverá ser false.
 
-É de extrema importância que o atributi que esteja gerando o hash, seja o mesmo do `equals`.
+É de extrema importância que o atributo que esteja gerando o hash, seja o mesmo do `equals`.
 
 ---
 
@@ -4376,6 +4376,65 @@ public static void main(String[] args) {
 //        Creepy Nuts
 //        Natori
 //        Eve
+```
+
+---
+
+# 168 - Coleções pt 08 - List pt 03
+
+Podemos procurar objetos na lista com o `contains`, seu retorno é um booleano. Usar o `contains` também executa o `equals`, que percorre cada item da lista, nisto entra a questão de performance.  
+
+Para adicionar um valor em uma determinada posição da lista, inserimos primeiro a posição e logo depois o que irá ser inserido:
+
+```Java
+public class SmartphoneListTest01 {
+    public static void main(String[] args) {
+        Smartphone s1 = new Smartphone("1357", "Samsung");
+        Smartphone s2 = new Smartphone("2468", "Iphone");
+        Smartphone s3 = new Smartphone("1470", "Xiaomi");
+        
+        List<Smartphone> smartphoneList = new ArrayList<>(6);
+        
+        smartphoneList.add(s1);
+        smartphoneList.add(s2);
+        smartphoneList.add(0, s3);
+        
+        for (Smartphone smartphone : smartphoneList) {
+            System.out.println(smartphone);
+        }
+    }
+}
+
+// Saída: Smartphone{serialNumber='1470', brand='Xiaomi'}
+//        Smartphone{serialNumber='1357', brand='Samsung'}
+//        Smartphone{serialNumber='2468', brand='Iphone'}
+```
+
+E também é possível pegar o index de um objeto com o `indexOf`:
+
+```Java
+public class SmartphoneListTest01 {
+    public static void main(String[] args) {
+        Smartphone s1 = new Smartphone("1357", "Samsung");
+        Smartphone s2 = new Smartphone("2468", "Iphone");
+        Smartphone s3 = new Smartphone("1470", "Xiaomi");
+        
+        List<Smartphone> smartphoneList = new ArrayList<>(6);
+        
+        smartphoneList.add(s1);
+        smartphoneList.add(s2);
+        smartphoneList.add(0, s3);
+        
+        Smartphone s4 = new Smartphone("2468", "Iphone");
+        
+        System.out.println(smartphoneList.contains(s4));
+        int indexSmartphone4 = smartphoneList.indexOf(s4);
+        System.out.println(indexSmartphone4);
+    }
+}
+
+// Saída: true
+//        2
 ```
 
 ---
