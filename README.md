@@ -4775,3 +4775,85 @@ public class MangaSortTest01 {
     }
 }
 ```
+
+---
+
+# 172 - Coleções pt 12 - Binary Search
+
+O Binary Search é uma das formas de procurar em uma lista, seu diferencial é que ele retorna a posição em que se deveria inserir um item na lista caso este item não exista ( (- (ponto de inserção) -1) ).
+
+Para que ele retorne a posição que deve ser inserida caso não exista, é necessário com que a lista seja uma lista ordenada, se não definida o resultado é *undefined*.
+
+```Java
+public class BinarySearchTest01 {
+    public static void main(String[] args) {
+        List<Integer> numbers = new ArrayList<>();
+        numbers.add(78);
+        numbers.add(25);
+        numbers.add(60);
+        numbers.add(9);  
+        // (- (ponto de inserção) -1)
+        // index 0, 1, 2, 3        
+        // value 9, 25, 60, 78      
+        Collections.sort(numbers);
+        System.out.println(numbers);
+        System.out.println(Collections.binarySearch(numbers, 15));
+    }
+}
+
+// Saída: -2
+```
+
+Pelo valor procurado esta saída nos indica que pela ordem da lista ela deverá ser inserida na segunda posição. O "-1" da regrinha ( (- (ponto de inserção) -1) ), serve para nos mostrar que se um valor realmente existe ele vai retornar um valor positivo, se o valor a ser procurado fosse "0" seria retornado "-1", se "0" existisse na lista, seria retornado "0".
+
+Ordenação por nome na lista de mangas:
+
+```Java
+public class BinarySearchTest02 {
+    public static void main(String[] args) {
+        List<Manga> mangas = new ArrayList<>();
+        mangas.add(new Manga(13579L, "Kimetsu no yaiba", 49.90));
+        mangas.add(new Manga(24680L, "Sousou no Frieren", 49.90));
+        mangas.add(new Manga(86420L, "Tongari Boushi no Atelier", 39.90));
+        mangas.add(new Manga(97531L, "Yu Yu Hakusho", 54.90));  
+        mangas.add(new Manga(19465L, "Houseki no Kuni", 32.90));
+        Collections.sort(mangas);
+        for (Manga manga : mangas) {  
+            System.out.println(manga);
+        }
+        
+        Manga mangaSearch = new Manga(19465L, "Houseki no Kuni", 32.90);
+        System.out.println(Collections.binarySearch(mangas, mangaSearch));
+    }
+}
+```
+
+Quando se faz uma ordenação personalizada, precisa-se passar o objeto de ordenação no `Collections.binarySearch()`.
+
+Ordenação por id na lista de mangas:
+
+```Java
+public class BinarySearchTest02 {
+    public static void main(String[] args) {
+        MangaByIdComparator mangaByIdComparator = new MangaByIdComparator();
+        List<Manga> mangas = new ArrayList<>();
+        mangas.add(new Manga(13579L, "Kimetsu no yaiba", 49.90));
+        mangas.add(new Manga(24680L, "Sousou no Frieren", 49.90));
+        mangas.add(new Manga(86420L, "Tongari Boushi no Atelier", 39.90));
+        mangas.add(new Manga(97531L, "Yu Yu Hakusho", 54.90));
+        mangas.add(new Manga(19465L, "Houseki no Kuni", 32.90));
+//        Collections.sort(mangas);
+        mangas.sort(mangaByIdComparator);
+        for (Manga manga : mangas) {
+            System.out.println(manga);
+        }
+        
+        Manga mangaSearch = new Manga(19465L, "Houseki no Kuni", 32.90);
+        System.out.println(Collections.binarySearch(mangas, mangaSearch, mangaByIdComparator));
+    }
+}
+```
+
+Vale lembrar que o objeto não está sendo procurado por meio do `equals`, ele só compara o valor solicitado, no caso o id, então se mudarmos os outros valores, não mudará o resultado, por mais que diferente.
+
+Também é possível usar `Collections.binarySearch()` com Arrays.
