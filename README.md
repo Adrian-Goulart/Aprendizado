@@ -4533,3 +4533,198 @@ public class Manga {
 
 ---
 
+# 170 - Coleções pt 10 - Sorting lists pt 02 - Comparable
+
+A classe String implementa a interface *Comparable*, o que permite organizar a lista em ordem lexicográfica. O *Comparable* tem o método `compareTo` que vai nos permitir falar para o Java como vamos organizar nossa lista.
+
+Primeiramente implementamos o Comparable e o `compareTo` na classe da lista. O `compareTo` retorna somente números inteiros e com ele temos acesso a dois objetos, sendo eles o `this` e o objeto passado como variável de referência (`manga` no caso).
+
+```Java
+public class Manga implements Comparable<Manga> {
+    private Long id;
+    private String name;
+    private double priece;
+    
+    // ... Outras partes do código 
+    
+    @Override
+    public int compareTo(Manga manga) {
+        return 0;
+    }
+}
+```
+
+Para usar o `compareTo` também temos algumas regras, sendo elas:
+
+- Negativo se o `this` < `manga`
+- Se `this` == `manga`, return 0
+- Positivo se `this` > `manga`
+
+Então para organizar por id ficaria assim;
+
+```Java
+@Override
+public int compareTo(Manga manga) {
+    if (this.id < manga.getId()) {
+        return -1;
+    } else if (this.id.equals(manga.getId())) {
+        return 0;
+    } else {
+        return 1;
+    }
+}
+```
+
+Execução:
+
+```Java
+public class MangaSortTest01 {
+    public static void main(String[] args) {
+        List<Manga> mangas = new ArrayList<>();
+        mangas.add(new Manga(13579L, "Kimetsu no yaiba", 49.90));
+        mangas.add(new Manga(24680L, "Sousou no Frieren", 49.90));
+        mangas.add(new Manga(86420L, "Tongari Boushi no Atelier", 39.90));
+        mangas.add(new Manga(97531L, "Yu Yu Hakusho", 54.90));
+        mangas.add(new Manga(19465L, "Houseki no Kuni", 32.90));
+        System.out.println("Sem ordenação");
+        System.out.println(mangas);
+        
+        Collections.sort(mangas);
+        System.out.println("Com ordenação");
+        System.out.println(mangas);
+    }
+}
+
+// Saída: 
+// Sem ordenação
+[Manga{id=13579, name='Kimetsu no yaiba', priece=49.9}, 
+Manga{id=24680, name='Sousou no Frieren', priece=49.9}, Manga{id=86420, name='Tongari Boushi no Atelier', priece=39.9},
+Manga{id=97531, name='Yu Yu Hakusho', priece=54.9},
+Manga{id=19465, name='Houseki no Kuni', priece=32.9}]
+// Com ordenação
+[Manga{id=19465, name='Houseki no Kuni', priece=32.9},
+Manga{id=86420, name='Tongari Boushi no Atelier', priece=39.9},
+Manga{id=13579, name='Kimetsu no yaiba', priece=49.9},
+Manga{id=24680, name='Sousou no Frieren', priece=49.9},
+Manga{id=97531, name='Yu Yu Hakusho', priece=54.9}]
+```
+
+O próprio Java é responsável de chamar o `compareTo`.
+
+Os Wrappers implementam o Comparable, dessa forma eles já implementaram o `compareTo` também, logo o código para ordenar por id pode-se resumir a:
+
+```Java
+@Override
+public int compareTo(Manga manga) {
+	return this.id.compareTo(manga.getId());
+    }
+}
+```
+
+Já com os tipos primitivos isto não funciona, mas no caso, podemos fazer retornar um double wrapper com o `valueOf`, assim permitindo utilizar o `compareTo`:
+
+```Java
+return Double.valueOf(priece).compareTo(manga.getPriece());
+// Ou
+return Double.compare(priece, manga.getPriece());
+```
+
+
+Código Completo:
+
+Manga:
+
+```Java
+public class Manga implements Comparable<Manga> {
+    private Long id;
+    private String name;
+    private double priece;
+    
+    public Manga(Long id, String name, double priece) {
+        Objects.requireNonNull(id, "Id não pode ser null") 
+        Objects.requireNonNull(name, "Name não poode ser null");
+        this.id = id;
+        this.name = name;
+        this.priece = priece;
+    }
+    
+    @Override  
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Manga manga = (Manga) o;
+        return Double.compare(priece, manga.priece) == 0 && Objects.equals(id, manga.id) && Objects.equals(name, manga.name);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, priece);
+    }
+    
+    @Override
+    public String toString() {
+        return "Manga{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", priece=" + priece +
+                '}';
+    }
+    
+    public Long getId() {
+        return id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public double getPriece() {
+        return priece;
+    }
+    
+    public void setPriece(double priece) {
+        this.priece = priece;
+    }
+    
+//  Negativo se o `this` < `manga`
+//  Se `this` == `manga`, return 0
+//  Positivo se `this` > `manga`
+    @Override
+    public int compareTo(Manga manga) {
+//        return this.id.compareTo(manga.getId());
+//        return this.name.compareTo(manga.name);
+        return Double.compare(priece, manga.getPriece());
+    }
+}
+```
+
+MangaSortTest01:
+
+```Java
+public class MangaSortTest01 {
+    public static void main(String[] args) {
+        List<Manga> mangas = new ArrayList<>();
+        mangas.add(new Manga(13579L, "Kimetsu no yaiba", 49.90));
+        mangas.add(new Manga(24680L, "Sousou no Frieren", 49.90));
+        mangas.add(new Manga(86420L, "Tongari Boushi no Atelier", 39.90));
+        mangas.add(new Manga(97531L, "Yu Yu Hakusho", 54.90));
+        mangas.add(new Manga(19465L, "Houseki no Kuni", 32.90));
+        System.out.println("Sem ordenação");
+        System.out.println(mangas);
+        
+        Collections.sort(mangas);
+        System.out.println("Com ordenação");
+        System.out.println(mangas);
+    }
+}
+```
+
+---
+
