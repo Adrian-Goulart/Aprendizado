@@ -4249,7 +4249,7 @@ Não confundir *Collection* (Interface) com Coleções.
 
 # 166 - Coleções pt 06 - List pt 01
 
- Como o `List` é umas interface do pacote Collections, ou seja, coeso, então nele precisamos informar o tipo de objeto sendo um dos mais usados o `ArrayList`.
+ Como o `List` é uma interface do pacote Collections, ou seja, coeso, então nele precisamos informar o tipo de objeto sendo um dos mais usados o `ArrayList`.
 
 ```Java
 public class ListTest01 {
@@ -4728,3 +4728,50 @@ public class MangaSortTest01 {
 
 ---
 
+# 171 - Coleções pt 11 - Sorting lists pt 03 - Comparator
+
+O *Comparator* também é uma interface que compara e não se utiliza implementando diretamente na classe, porque o sort espera que tenha um `compareTo`.
+
+Com um *Comparator* é possível trocar a ordenação da lista, para isto é necessário criar um Objeto que implementa *Comparator*, logo após temos de inserir qual classe que vamos prover nesta implementação, esta classe precisa implementar Comparable.
+
+```Java
+class MangaByIdComparator implements Comparator<Manga> {
+    @Override
+    public int compare(Manga manga1, Manga manga2) {
+        return 0;
+    }
+}
+```
+
+Então para organizar por id com o Comparator no caso basta:
+
+```Java
+class MangaByIdComparator implements Comparator<Manga> {
+    @Override
+    ￼public int compare(Manga manga1, Manga manga2) {
+        return manga1.getId().compareTo(manga2.getId());
+    }
+}
+```
+
+E para utilizar inserimos o objeto no `Collections.Sort()` 
+
+```Java
+public class MangaSortTest01 {
+    public static void main(String[] args) {
+        List<Manga> mangas = new ArrayList<>();
+        mangas.add(new Manga(13579L, "Kimetsu no yaiba", 49.90));
+        mangas.add(new Manga(24680L, "Sousou no Frieren", 49.90));
+        mangas.add(new Manga(86420L, "Tongari Boushi no Atelier", 39.90));
+        mangas.add(new Manga(97531L, "Yu Yu Hakusho", 54.90));
+        mangas.add(new Manga(19465L, "Houseki no Kuni", 32.90));
+        System.out.println("Sem ordenação");
+        System.out.println(mangas);
+        
+        Collections.sort(mangas, new MangaByIdComparator());
+        // ou mangas.sort(new MangaByIdComparator());
+        System.out.println("Com ordenação");
+        System.out.println(mangas);
+    }
+}
+```
