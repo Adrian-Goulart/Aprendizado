@@ -4857,3 +4857,83 @@ public class BinarySearchTest02 {
 Vale lembrar que o objeto não está sendo procurado por meio do `equals`, ele só compara o valor solicitado, no caso o id, então se mudarmos os outros valores, não mudará o resultado, por mais que diferente.
 
 Também é possível usar `Collections.binarySearch()` com Arrays.
+
+---
+
+# 173 - Coleções pt 13 - Conversão de Lista para Arrays e vice versa
+
+Podemos transformar Listas em arrays com o `toArray()`:
+
+```Java
+public class ListArrayTest01 {
+    public static void main(String[] args) {
+        List<Integer> numbersList = new ArrayList<>();
+        numbersList.add(1);
+        numbersList.add(2);
+        numbersList.add(3);
+        Integer[] integersArray = numbersList.toArray(new Integer[0]);
+        System.out.println(Arrays.toString(integersArray));
+	    }
+}
+
+// Saída: [1, 2, 3]
+```
+
+E para transformar arrays em lista utilizamos o `asList()`:
+
+```Java
+public class ListArrayTest01 {
+    public static void main(String[] args) {
+        Integer[] arrayNumbers = new Integer[3];
+        arrayNumbers[0] = 1;
+        arrayNumbers[1] = 2;
+        arrayNumbers[2] = 3;
+        
+        List<Integer> arrayToList = Arrays.asList(arrayNumbers);
+        System.out.println(Arrays.toString(arrayNumbers));
+        System.out.println(arrayToList);
+    }
+}
+
+// Saída: [1, 2, 3]
+//        [1, 2, 3]
+```
+
+Mas desta forma os dois estão *linkados* entre si, então não se é possível fazer alterações através do `asList()`.
+
+O `ArrayList` pode ser sobrecarregado, podendo passar o valor do tamanho inicial da lista ou uma outra coleção. Desta forma podemos adicionar o `Arrays.asList(arrayNumbers)` dentro dele:
+
+```Java
+public class ListArrayTest01 {
+    public static void main(String[] args) {
+        Integer[] arrayNumbers = new Integer[3];
+        arrayNumbers[0] = 1;
+        arrayNumbers[1] = 2;
+        arrayNumbers[2] = 3;
+        
+        List<Integer> arrayToList = Arrays.asList(arrayNumbers);
+        System.out.println(Arrays.toString(arrayNumbers));
+        System.out.println(arrayToList);
+        
+        System.out.println("----------------");
+        List<Integer> numsList = new ArrayList<>(Arrays.asList(arrayNumbers));
+        numsList.add(18);
+        System.out.println(numsList);
+    }
+}
+
+// Saída: [1, 2, 3]
+//        [1, 2, 3]
+//        ---------------
+//        [1, 2, 3, 18]
+```
+
+Outras maneira de adicionar valores diretamente na lista:
+
+```Java
+List<String> stringList = Arrays.asList("LiSA", "AiNA THE END", "Creepy Nuts");
+List<Integer> integers = List.of(1, 2, 3);
+```
+
+---
+
