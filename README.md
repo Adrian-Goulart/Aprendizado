@@ -4937,3 +4937,80 @@ List<Integer> integers = List.of(1, 2, 3);
 
 ---
 
+# 174 - Coleções pt 14 - Iterator
+
+Para exemplificar o *Iterator* vamos adicionar a variável quantidade na classe `Manga`, sobrecarregar o construtor, atualizar o `toString` e adicionar os Getters e Setters.
+
+Sobre remover itens de uma lista podemos pensar em utilizar o *foreach* e uma condição dentro dele:
+
+```Java
+public class IteratorTest01 {
+    public static void main(String[] args) {
+        List<Manga> mangas = new ArrayList<>();
+        mangas.add(new Manga(13579L, "Kimetsu no yaiba", 49.90, 8));
+        mangas.add(new Manga(24680L, "Sousou no Frieren", 49.90, 0));
+        mangas.add(new Manga(86420L, "Tongari Boushi no Atelier", 39.90, 0));  
+        mangas.add(new Manga(97531L, "Yu Yu Hakusho", 54.90, 11));
+        mangas.add(new Manga(19465L, "Houseki no Kuni", 32.90, 9));
+        
+        for (Manga manga : mangas) {
+            if (manga.getId() == 0) {
+                mangas.remove(manga);
+            }
+        }
+    }
+}
+```
+
+Mas desta forma não é possível, porque é lançado a exceção *ConcurrentModificationException*,  o que não permite a alteração durante a iteração.
+
+Para isto podemos utilizar o *Iterator*. É uma classe que checa antes de fazer alguma alteração:
+
+```Java
+public class IteratorTest01 {
+    public static void main(String[] args) {
+        List<Manga> mangas = new ArrayList<>();
+        mangas.add(new Manga(13579L, "Kimetsu no yaiba", 49.90, 8));
+        mangas.add(new Manga(24680L, "Sousou no Frieren", 49.90, 0));
+        mangas.add(new Manga(86420L, "Tongari Boushi no Atelier", 39.90, 0));
+        mangas.add(new Manga(97531L, "Yu Yu Hakusho", 54.90, 11));
+        mangas.add(new Manga(19465L, "Houseki no Kuni", 32.90, 9));
+        
+        Iterator<Manga> mangaIterator = mangas.iterator();
+        while (mangaIterator.hasNext()) {
+            if (mangaIterator.next().getQuantity() == 0) {
+                mangaIterator.remove();
+            }
+        }
+        System.out.println(mangas);
+    }
+}
+```
+
+A partir do Java 8, foi adicionado o `removeIf(referencia -> condição)`, no qual faz o mesmo do código acima:
+
+```Java
+public class IteratorTest01 {
+    ￼public static void main(String[] args) {
+        List<Manga> mangas = new ArrayList<>();
+        mangas.add(new Manga(13579L, "Kimetsu no yaiba", 49.90, 8));
+        mangas.add(new Manga(24680L, "Sousou no Frieren", 49.90, 0));
+        mangas.add(new Manga(86420L, "Tongari Boushi no Atelier", 39.90, 0));
+        mangas.add(new Manga(97531L, "Yu Yu Hakusho", 54.90, 11));
+        mangas.add(new Manga(19465L, "Houseki no Kuni", 32.90, 9));
+	    
+//        Iterator<Manga> mangaIterator = mangas.iterator();
+//        while (mangaIterator.hasNext()) {
+//            if (mangaIterator.next().getQuantity() == 0) {
+//                mangaIterator.remove();
+//            }
+//        }
+        mangas.removeIf(manga -> manga.getQuantity() == 0);
+        System.out.println(mangas);
+    }
+}
+
+// Saída: [Manga{id=13579, name='Kimetsu no yaiba', priece=49.9, quantity=8}, Manga{id=97531, name='Yu Yu Hakusho', priece=54.9, quantity=11}, Manga{id=19465, name='Houseki no Kuni', priece=32.9, quantity=9}]
+```
+
+---
