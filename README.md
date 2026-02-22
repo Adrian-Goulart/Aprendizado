@@ -5069,3 +5069,43 @@ Se inserirmos um valor já existente o `Set` vai ignorá-lo, por isto a importâ
 Caso deseje manter a ordem de inserção da lista pode-se utilizar o `LinkedHashSet`
 
 ---
+
+# 176 - Coleções pt 16 - NavigableSet, TreeSet pt 01
+
+O `NavigableSet` estende de `SortedSet` que estende de `Set`, então seguem as mesmas regras do `Set`. 
+
+O `NavigableSet` adiciona alguns métodos para pegar elementos baseado em posições ==---...AAA...---==
+
+Uma das classes que implementam o `NavigableSet` é o `TreeSet`. (Classes com o nome *Tree*, geralmente trabalham em cada parte onde tem o Sort, logo precisamos que a classe que estamos trabalhando, contenha Comparable).
+
+```Java
+public class NavigableSetTest01 {
+    public static void main(String[] args) {
+        NavigableSet<Smartphone> set = new TreeSet<>();
+        Smartphone smartphone = new Smartphone("321", "Samsung");
+        set.add(smartphone);
+    }
+}
+```
+
+Ao executar este código, será lançada uma exceção, pois Smartphone não implementa Comparable. Caso não tenha acesso a classe podemos passar um *Comparable* na criação do `TreeSet`.
+
+```Java
+class SmartphoneBrandComparator implements Comparator<Smartphone> {
+    @Override
+    public int compare(Smartphone s1, Smartphone s2) {
+        return s1.getBrand().compareTo(s2.getBrand());
+    }
+}
+
+public class NavigableSetTest01 {
+    public static void main(String[] args) {
+        NavigableSet<Smartphone> set = new TreeSet<>(new SmartphoneBrandComparator());
+        Smartphone smartphone = new Smartphone("321", "Samsung");
+        set.add(smartphone);
+        System.out.println(set);
+    }
+}
+```
+
+Deve-se utilizar o `TreeSet` quando a classe que estamos criando na coleção implementa Comparable OU quando criamos um Comparator E toda vez que inserirmos um elemento o próprio `TreeSet` irá reordenar a  coleção baseado no valor ou do `CompareTo` ou do que passamos no compare do Comparator.
