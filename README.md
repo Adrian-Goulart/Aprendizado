@@ -5014,3 +5014,58 @@ public class IteratorTest01 {
 ```
 
 ---
+
+# 175 - Coleções pt 15 - Set, HashSet
+
+No código anterior poderíamos utilizar `LinkedList` ao invés de `ArrayList`. O `LinkedList` possui uma velocidade de remoção melhor ( O(1) ), então para uma lista aonde haverá muita remoção, ele se sobressai melhor.
+
+https://stackoverflow.com/questions/559839/big-o-summary-for-java-collections-framework-implementations
+
+https://www.bigocheatsheet.com/
+
+O `Set` é uma interface que estende de Collection e ela não permite elementos duplicados dentro da coleção. Vamos começar com o Objeto `HashSet`
+
+```Java
+public class SetTest01 {
+    public static void main(String[] args) {
+        Set<Manga> mangas = new HashSet<>();
+        mangas.add(new Manga(13579L, "Kimetsu no yaiba", 49.90, 8));
+        mangas.add(new Manga(24680L, "Sousou no Frieren", 49.90, 0));
+        mangas.add(new Manga(86420L, "Tongari Boushi no Atelier", 39.90, 0));
+        mangas.add(new Manga(97531L, "Yu Yu Hakusho", 54.90, 11));
+        mangas.add(new Manga(19465L, "Houseki no Kuni", 32.90, 9));
+    }
+}
+```
+
+É visível que o `HashSet` utiliza o Hash, ou seja, está é uma coleção que permite apenas elementos únicos e que serão organizados pelo Hash, logo, não é possível garantir a posição dos elementos na lista, porque pode ser alterada conforme algo seja inserido na lista.
+
+```Java
+public class SetTest01 {
+    public static void main(String[] args) {
+        Set<Manga> mangas = new HashSet<>();
+        mangas.add(new Manga(13579L, "Kimetsu no yaiba", 49.90, 8));
+        mangas.add(new Manga(24680L, "Sousou no Frieren", 49.90, 0));
+        mangas.add(new Manga(86420L, "Tongari Boushi no Atelier", 39.90, 0));
+        mangas.add(new Manga(97531L, "Yu Yu Hakusho", 54.90, 11));
+        mangas.add(new Manga(19465L, "Houseki no Kuni", 32.90, 9));
+        
+        for (Manga manga : mangas) {
+            System.out.println(manga);
+        }
+    }
+}
+
+// Saída: Manga{id=86420, name='Tongari Boushi no Atelier', priece=39.9, quantity=0}
+//        Manga{id=19465, name='Houseki no Kuni', priece=32.9, quantity=9}
+//        Manga{id=32145, name='Kusuriya no Hitorigoto', priece=49.9, quantity=16}
+//        Manga{id=13579, name='Kimetsu no yaiba', priece=49.9, quantity=8}
+//        Manga{id=24680, name='Sousou no Frieren', priece=49.9, quantity=0}
+//        Manga{id=97531, name='Yu Yu Hakusho', priece=54.9, quantity=11}
+```
+
+Se inserirmos um valor já existente o `Set` vai ignorá-lo, por isto a importância da sobrescrita do `equals` no Objeto, porque a checagem é feita por ele.
+
+Caso deseje manter a ordem de inserção da lista pode-se utilizar o `LinkedHashSet`
+
+---
