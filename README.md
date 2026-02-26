@@ -5074,7 +5074,7 @@ Caso deseje manter a ordem de inserção da lista pode-se utilizar o `LinkedHash
 
 O `NavigableSet` estende de `SortedSet` que estende de `Set`, então seguem as mesmas regras do `Set`. 
 
-O `NavigableSet` adiciona alguns métodos para pegar elementos baseado em posições ==---...AAA...---==
+O `NavigableSet` adiciona alguns métodos para pegar elementos baseado em posições já existentes
 
 Uma das classes que implementam o `NavigableSet` é o `TreeSet`. (Classes com o nome *Tree*, geralmente trabalham em cada parte onde tem o Sort, logo precisamos que a classe que estamos trabalhando, contenha Comparable).
 
