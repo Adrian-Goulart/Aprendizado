@@ -5072,9 +5072,9 @@ Caso deseje manter a ordem de inserção da lista pode-se utilizar o `LinkedHash
 
 # 176 - Coleções pt 16 - NavigableSet, TreeSet pt 01
 
-O `NavigableSet` estende de `SortedSet` que estende de `Set`, então seguem as mesmas regras do `Set`. 
+O `NavigableSet` estende de `SortedSet` que estende de `Set`, então seguem as mesmas regras do `Set`.
 
-O `NavigableSet` adiciona alguns métodos para pegar elementos baseado em posições já existentes
+O `NavigableSet` adiciona alguns métodos para pegar elementos baseado em posições já existentes.
 
 Uma das classes que implementam o `NavigableSet` é o `TreeSet`. (Classes com o nome *Tree*, geralmente trabalham em cada parte onde tem o Sort, logo precisamos que a classe que estamos trabalhando, contenha Comparable).
 
@@ -5109,3 +5109,115 @@ public class NavigableSetTest01 {
 ```
 
 Deve-se utilizar o `TreeSet` quando a classe que estamos criando na coleção implementa Comparable OU quando criamos um Comparator E toda vez que inserirmos um elemento o próprio `TreeSet` irá reordenar a  coleção baseado no valor ou do `CompareTo` ou do que passamos no compare do Comparator.
+
+---
+
+# 177 - Coleções pt 17 - NavigableSet, TreeSet pt 02
+
+O `TreeSet` não utiliza o `equals` para verificar se os elementos são iguais, ele se baseia no `compareTo` ou o *Comparator* que está sendo utilizado. Utilizar o `compareTo` com dois elementos não irá funcionar então é bom utilizar o Comparator ou alguma outra forma, principalmente se estiver utilizando dois ou mais atributos no `equals`.
+
+Para inverter a ordem da lista usa-se o método `.descendingSet()`:
+
+```Java
+public class NavigableSetTest01 {
+    public static void main(String[] args) {
+        NavigableSet<Manga> mangas = new TreeSet<>();
+        mangas.add(new Manga(13579L, "Kimetsu no yaiba", 49.90, 8));
+        mangas.add(new Manga(24680L, "Sousou no Frieren", 49.90, 0));
+        mangas.add(new Manga(86420L, "Tongari Boushi no Atelier", 39.90, 0));
+        mangas.add(new Manga(97531L, "Yu Yu Hakusho", 54.90, 11));
+        mangas.add(new Manga(19465L, "Houseki no Kuni", 32.90, 9));
+	    
+        for (Manga manga : mangas.descendingSet()) {
+            System.out.println(manga);
+        }
+    }
+}
+```
+
+Para os próximos métodos vamos criar um Comparator por preço para os mangás.
+
+```Java
+class MangaPriceComparator implements Comparator<Manga> {
+    @Override
+    public int compare(Manga manga1, Manga manga2) {
+        return Double.compare(manga1.getPrice(), manga2.getPrice());
+    }
+}
+```
+
+E logo inserimos o Comparator no `NavigableSet<Manga>`. 
+
+Estes métodos servem para comparação baseado no objeto passado eles vão retornar:
+
+-  lower: o imediatamente menor.
+-  floor: igual ou imediatamente menor.
+-  higher: o imediatamente maior.
+-  ceiling: igual ou imediatamente menor.
+
+```Java
+public class NavigableSetTest01 {
+    public static void main(String[] args) {   
+        NavigableSet<Manga> mangas = new TreeSet<>(new MangaPriceComparator());
+        mangas.add(new Manga(13579L, "Kimetsu no yaiba", 49.90, 8));
+        mangas.add(new Manga(24680L, "Sousou no Frieren", 49.90, 0));
+        mangas.add(new Manga(86420L, "Tongari Boushi no Atelier", 39.90, 0));
+        mangas.add(new Manga(97531L, "Yu Yu Hakusho", 54.90, 11));
+        mangas.add(new Manga(19465L, "Houseki no Kuni", 32.90, 9));
+        for (Manga manga : mangas) {
+            System.out.println(manga);
+        }
+        
+        Manga mangaTest = new Manga(76534L, "Kanata no Astra", 49.9, 9);
+        
+        // lower <
+        // floor <=
+        // higher >
+        // ceiling >=
+        
+        System.out.println("-----------");
+        System.out.println(mangas.lower(mangaTest));
+        System.out.println(mangas.floor(mangaTest));
+        System.out.println(mangas.higher(mangaTest));
+        System.out.println(mangas.ceiling(mangaTest));
+    }
+}
+
+// Saída: Manga{id=86420, name='Tongari Boushi no Atelier', price=39.9, quantity=0}
+//        Manga{id=13579, name='Kimetsu no yaiba', price=49.9, quantity=8}
+//        Manga{id=97531, name='Yu Yu Hakusho', price=54.9, quantity=11}
+//        Manga{id=13579, name='Kimetsu no yaiba', price=49.9, quantity=8}
+```
+
+O mangá "Sousou no Frieren" não aparece por conta do Comparator que está comparando os preços.
+
+Outros métodos são os `pullFirst` e o `pullLast`. Enquanto o `pullFirst` retorna o primeiro elemento da lista e logo após o **remove**, o `pullLast` retorna o último elemento da lista e o **remove**.
+
+```Java
+public class NavigableSetTest01 {
+    public static void main(String[] args) {
+        NavigableSet<Manga> mangas = new TreeSet<>(new MangaPriceComparator());
+        mangas.add(new Manga(13579L, "Kimetsu no yaiba", 49.90, 8));
+        mangas.add(new Manga(24680L, "Sousou no Frieren", 49.90, 0));
+        mangas.add(new Manga(86420L, "Tongari Boushi no Atelier", 39.90, 0));
+        mangas.add(new Manga(97531L, "Yu Yu Hakusho", 54.90, 11));
+        mangas.add(new Manga(19465L, "Houseki no Kuni", 32.90, 9));
+        
+        for (Manga manga : mangas) {
+            System.out.println(manga);
+        }
+	    
+        System.out.println(mangas.size());
+        System.out.println(mangas.pollFirst());
+        System.out.println(mangas.size());
+    }
+}
+
+// Saída: Manga{id=19465, name='Houseki no Kuni', price=32.9, quantity=9}
+//        Manga{id=86420, name='Tongari Boushi no Atelier', price=39.9, quantity=0}
+//        Manga{id=13579, name='Kimetsu no yaiba', price=49.9, quantity=8}
+//        Manga{id=97531, name='Yu Yu Hakusho', price=54.9, quantity=11}
+//        4
+//        Manga{id=19465, name='Houseki no Kuni', price=32.9, quantity=9}
+//        3
+```
