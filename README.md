@@ -5297,3 +5297,80 @@ public class MapTest01 {
 Se deseja manter a ordem de inserção, pode ser utilizado o `LinkedHashMap<>()`.
 
 ---
+
+# 179 - Coleções pt 19 - Map, HashMap, LinkedHashMap pt 02
+
+Agora vamos criar uma classe "Consumidor" para associa-lo a um mangá comprado.
+
+Para um id auto gerado, existe uma classe `ThreadLocalRandom` no qual usamos `ThreadLocalRandom.current().nextLong()`, em que gera um Long e tem uma certa chance de que o valor será difícil de duplicar.
+
+```Java
+public class Consumer {
+    private Long id;
+    private String name;
+	
+    public Consumer(String name) {
+        this.id = ThreadLocalRandom.current().nextLong(0, 100_000);
+        this.name = name;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Consumer consumer = (Consumer) o;
+        return Objects.equals(id, consumer.id);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+    
+    @Override
+    public String toString() {
+        return "Consumer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+    
+    public Long getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+Agora vamos criar os dois consumidores, copiar os mangás, criar um *Map* de consumidor e mangá, adicionar o consumidor e o mangá e iterar sobre o *Map*:
+
+```Java
+public class MapTest02 {
+    public static void main(String[] args) {
+        Consumer consumer1 = new Consumer("Vedal");
+        Consumer consumer2 = new Consumer("Neurosama");
+        Consumer consumer3 = new Consumer("Evil");
+		
+        Manga manga1 = new Manga(13579L, "Kusuriya no Hitorigoto", 49.90);
+        Manga manga2 = new Manga(24680L, "Sousou no Frieren", 49.90);
+        Manga manga3 = new Manga(86420L, "Tongari Boushi no Atelier", 39.90);
+        Manga manga4 = new Manga(97531L, "Yu Yu Hakusho", 54.90);
+        Manga manga5 = new Manga(19465L, "Houseki no Kuni", 32.90);
+		
+        Map<Consumer, Manga> consumerManga = new HashMap<>();
+        consumerManga.put(consumer1, manga4);
+        consumerManga.put(consumer2, manga3);
+        consumerManga.put(consumer3, manga1);
+        
+        for (Map.Entry<Consumer, Manga> entry : consumerManga.entrySet()) {
+            System.out.println(entry.getKey().getName()+" : "+entry.getValue().getName());
+        }
+    }
+}
+
+// Saída: Vedal : Yu Yu Hakusho
+//        Neurosama : Tongari Boushi no Atelier
+//        Evil : Kusuriya no Hitorigoto
+```
