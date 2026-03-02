@@ -5221,3 +5221,79 @@ public class NavigableSetTest01 {
 //        Manga{id=19465, name='Houseki no Kuni', price=32.9, quantity=9}
 //        3
 ```
+
+---
+
+# 178 - Coleções pt 18 - Map, HashMap, LinkedHashMap pt 01
+
+O `Map` não é uma collection pois ele não estende de *Collection*.
+
+Na documentação do `Map<K, V>` observa-se "K" e "V", que representam chave (**K**ey) e valor (**V**alue) respectivamente. Dessa forma para cada chave tem um valor associado. De tal maneira na criação passamos o tipo de cada um.
+
+Diferentemente de listas e do *Set* o *map* utiliza o método `.put()` para adicionar algo:
+
+```Java
+public class MapTest01 {
+    public static void main(String[] args) {
+        Map<String, String> map = new HashMap<>();
+        map.put("A Silent Voice", "Koe no Katachi");
+        map.put("Call of the Night", "Yofukashi no Uta");
+        map.put("The Apothecary Diaries", "Kusuriya no Hitorigoto");
+        map.put("Frieren: Beyond Journey’s End", "Sousou no Frieren");
+        System.out.println(map);
+    }
+}
+
+// Saída: {A Silent Voice=Koe no Katachi, Call of the Night=Yofukashi no Uta, Frieren: Beyond Journey’s End= Sousou no Frieren, The Apothecary Diaries= Kusuriya no Hitorigoto}
+```
+
+Quando há duas chaves iguais o valor é substituído. Com isso temos o `.putIfAbsent()`, em que ele adiciona somente se caso não exista.
+
+Para iterar sobre o *map*, podemos utilizar o *for*, contudo temos a navegação via chave ou a navegação via valor. Para as chaves utiliza-se o `keySet()` (como as chaves são valores únicos, ou seja, não podem se repetir, ele retorna um Set de String) e para valores utilizamos o `map.values()` que retorna uma Collection de String.
+
+```Java
+public class MapTest01 {
+    public static void main(String[] args) {
+        Map<String, String> map = new HashMap<>();
+        map.put("A Silent Voice", "Koe no Katachi");
+        map.put("Call of the Night", "Yofukashi no Uta");
+        map.put("The Apothecary Diaries", "Kusuriya no Hitorigoto");
+        map.put("Frieren: Beyond Journey’s End", "Sousou no Frieren");
+        map.putIfAbsent("A Silent Voice", "Koe no Katachi");
+        System.out.println(map);
+        
+        for (String key : map.keySet()) {
+            // Podemos pegar tanto a chave quanto valor
+            System.out.println( key+" : "+map.get(key));
+        }
+        System.out.println("-----------------");
+        for (String value : map.values()) {
+            System.out.println(value);
+        }
+    }
+}
+```
+
+A outra forma de iterar sobre o *map* é com o `entrySet` no for:
+
+```Java
+public class MapTest01 {
+    public static void main(String[] args) {
+        Map<String, String> map = new HashMap<>();
+        map.put("A Silent Voice", "Koe no Katachi");
+        map.put("Call of the Night", "Yofukashi no Uta");
+        map.put("The Apothecary Diaries", "Kusuriya no Hitorigoto");
+        map.put("Frieren: Beyond Journey’s End", "Sousou no Frieren");
+        map.putIfAbsent("A Silent Voice", "Koe no Katachi");
+        System.out.println(map);
+        
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
+    }
+}
+```
+
+Se deseja manter a ordem de inserção, pode ser utilizado o `LinkedHashMap<>()`.
+
+---
