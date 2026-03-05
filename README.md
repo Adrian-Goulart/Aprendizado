@@ -5470,3 +5470,90 @@ public class NavigableMapTest01 {
     }
 }
 ```
+
+
+---
+
+# 182 - Coleções pt 22 - Queue, PriorityQueue
+
+*Queue* é mais uma das coleções disponíveis e por padrão ele apresenta a característica **FIFO** (First In, First Out), a ideia de fila mesmo, o primeiro a entrar é o primeiro a sair.
+
+A classe adicionada a *Queue*, precisa obrigatoriamente ser um *Comparable*.
+
+Primeiramente veremos a `PriorityQueue<>()` em que permite colocar uma capacidade inicial e uma *Comparator* caso não tenha acesso a classe para alterá-la para *Comparable*. Ela serve para trabalhar com prioridades customizadas.
+
+A PriorityQueue irá manter a ordem mas não necessariamente quando tiver os objetos dentro em memória, isto é, não significa que os valores estarão organizados em memória (dentro do heap), mas quando tirarmos, teremos a forma ordenada que foi definida no *Comparable* ou no *Comparator*.
+
+O certo é utilizar algum dos métodos disponíveis da *Queue*, temos:
+
+- peek: Mostra o primeiro elemento da lista, se em um *While* não o remove da lista.
+- poll: pega o primeiro elemento e remove.
+- offer: semelhante ao *add*, a diferença é que ele retorna um valor booleano caso não consiga inserir em uma queue com capacidade restrita.
+- remove: remove o primeiro elemento.
+
+Exemplo do peek:
+
+```Java
+public class QueueTest01 {
+    public static void main(String[] args) {
+        Queue<String> queue = new PriorityQueue<>();
+        queue.add("Brand");
+        queue.add("New");
+        queue.add("Animal");
+		
+		// Loop infinito
+        while (!queue.isEmpty()) {
+            System.out.println(queue.peek());
+        }
+    }
+}
+```
+
+Exemplo do poll:
+
+```Java
+public class QueueTest01 {
+    public static void main(String[] args) {
+        Queue<String> queue = new PriorityQueue<>();
+        queue.add("Brand");
+        queue.add("New");
+        queue.add("Animal");
+		
+        while (!queue.isEmpty()) {
+            System.out.println(queue.poll());
+        }
+    }
+}
+// Observa que está ordenada, indicação do Comparator
+// Saída: Animal
+//        Brand
+//        New
+```
+
+Com o PriorityQueue podemos definir a prioridade. No exemplo de mangás podemos passar o Comparator de preço e definir do maior valor para o menos com o `MangaPriceComparator().reversed()`:
+
+```Java
+public class QueueTest02 {
+    public static void main(String[] args) {
+        PriorityQueue<Manga> mangas = new PriorityQueue<>(new MangaPriceComparator().reversed());
+        mangas.add(new Manga(13579L, "Kimetsu no yaiba", 49.90, 8));
+        mangas.add(new Manga(24680L, "Sousou no Frieren", 49.90, 0));
+        mangas.add(new Manga(86420L, "Tongari Boushi no Atelier", 39.90, 0));
+        mangas.add(new Manga(97531L, "Yu Yu Hakusho", 54.90, 11));
+        mangas.add(new Manga(19465L, "Houseki no Kuni", 32.90, 9));
+		
+        while(!mangas.isEmpty()) {
+            System.out.println(mangas.poll());
+        }
+    }
+}
+
+// Saída: Manga{id=97531, name='Yu Yu Hakusho', price=54.9, quantity=11}
+//        Manga{id=13579, name='Kimetsu no yaiba', price=49.9, quantity=8}
+//        Manga{id=24680, name='Sousou no Frieren', price=49.9, quantity=0}
+//        Manga{id=86420, name='Tongari Boushi no Atelier', price=39.9, quantity=0}
+//        Manga{id=19465, name='Houseki no Kuni', price=32.9, quantity=9}
+```
+
+---
+
