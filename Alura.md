@@ -83,3 +83,8 @@ Objeto ps = pessoa;
 ```
 
 O que acontece neste caso é como se as duas variáveis estivessem apontando para onde é o objeto e não criando um objeto em si no caso da terceira linha, com isso, o que é alterado é somente a forma de como se referencia ao objeto. A criação de um objeto só se deve a partir do `new`.
+
+---
+
+[[README]]
+
