@@ -1045,15 +1045,19 @@ graph TD;
 	style Has stroke-width:4px;
 ```
 
-```mermaid
-info
-```
 O Exame depende de uma classe para existir. A entidade fraca também terá de ter sempre a participação total em uma relação, lembrando que ela é representada pela linha dupla (neste caso a linha grossa).
 
-Representação correta do diagrama:
+[Representação correta do diagrama](https://www.giraffeacademy.com/databases/sql/er-diagrams-intro/)
 
-![[Anotações/img/Pasted image 20260513173958.png]]
-[Fonte](https://www.giraffeacademy.com/databases/sql/er-diagrams-intro/)
+# ER Diagrams para Schemas
+
+Para converter um ER Diagram para um Schema vamos:
+
+1. Criar as tabelas e seus atributos simples para cada entidade.
+2. Criar a tabela e a relação das entidades fracas em que incluam todos seus atributos simples. A chave primária desta nova relação deve ser a chave parcial da entidade fraca e a chave primária de seu respectivo dono.
+3. Mapear as relações binárias 1:1, logo, vamos mapear somente as relações de 1:1 em que contenham duas entidades participando. Para cada relação 1:1 binária, vamos incluir um lado da relação como uma chave estrangeira na outra a favor da participação total.
+4. Mapear as relações binárias 1:N, nesta, vamos incluir a chave primária do lado *1*, como chave estrangeira para o lado *N*.
+5. Mapear as relações binárias N:M, neste caso vamos criar uma nova tabela, no qual a chave primária é uma combinação das chaves primárias das duas entidades (Compound Key), assim incluindo os atributos necessárias desta relação.
 
 ---
 # Significados
@@ -1070,7 +1074,7 @@ Representação correta do diagrama:
 
 **Foreign Key**: é um atributo em que nos conecta com outra database. Ela guarda a chave primária de um *row* em outra database. É um meio de conectar ou definir a relação entre duas ou mais tabelas.
 
-**Composite Key**: é uma chave no qual precisa de dois atributos, dessa maneira a chave primária e a chave composta não identifica um *row* unicamente e sim somente juntas.
+**Composite Key**: é uma chave no qual tem dois ou mais atributos, dessa maneira a chave primária e a chave composta não identifica um *row* unicamente e sim somente juntas.
 
 **Wildcards**: uma maneira de definir diferentes padrões no qual desejamos associar diferentes tipos de dados. Pegar um dado no qual se encaixa em um tipo específico de padrão.
 
@@ -1087,6 +1091,10 @@ Representação correta do diagrama:
 
 **Triggers**: basicamente executa o que pedimos quando um determinado evento ocorre.
 
+**Binary Relation Types**: são aquelas relações em que está conectada a duas entidades.
+
+**Compound key**: é algo bem semelhante a uma **Composite Key**, mas é uma chave no qual além de de identificar a tabela por duas chaves primárias, em uma *relação de entidades* essas chaves primárias são uma referência as chaves primárias de outras tabelas. 
+
 ---
 # Bibliografia
 
@@ -1099,3 +1107,5 @@ Representação correta do diagrama:
 [SQL Tutorial - Full Database Course for Beginners- freeCodeCamp](https://www.youtube.com/watch?v=HXV3zeQKqGY) \**
 
 [Derived Attributes - erwin](https://bookshelf.erwin.com/bookshelf/public_html/12.0/Content/References/Data%20Modeling%20Overview/Derived%20Attributes.html)
+
+[In SQL, is it composite or compound keys? - Stack Exchange Network](https://dba.stackexchange.com/questions/3134/in-sql-is-it-composite-or-compound-keys)
